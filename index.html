@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="site-title">Auto-Packer Utility — швидке завантаження карт на сервер Minecraft</title>
+    
+    <!-- Пошукова оптимізація (SEO) для Google -->
+    <meta name="description" content="Найпростіший спосіб завантажити карту на Minecraft сервер за 1 хвилину без багів! Автоматичне перейменування у world, конфігурація server.properties та авто-ресурспак.">
+    <meta name="keywords" content="minecraft, сервер, завантажити карту, как загрузить карту на сервер, server.properties, mc-packs, ресурспак, auto-packer">
+    <meta name="author" content="Auto-Packer Utility">
+    
+    <!-- Іконка сайту (Favicon) для відображення в Google та на вкладці -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/minecraft-logo.png">
+
+    <!-- Підключення Tailwind CSS для стилів -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Бібліотека для роботи з ZIP архівами -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Шрифти Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Іконки FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #03050d;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.12) 0px, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0px, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0px, transparent 50%);
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .tab-content {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .edit-mode-active {
+            border-color: #10b981 !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+        }
+        /* Світіння для карток */
+        .glow-card {
+            background: rgba(11, 15, 25, 0.65);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.02);
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+
+    <!-- Головний контейнер -->
+    <div class="max-w-5xl w-full mx-auto px-4 py-12">
+        
+        <!-- Шапка сайту з елементами з твого рендеру -->
+        <header class="flex flex-col items-center text-center mb-12">
+            <!-- Блок з анімованим логотипом -->
+            <div class="relative w-24 h-20 flex items-center justify-center shrink-0 mb-4">
+                <!-- Анімоване неонове перехрестя з фото -->
+                <div class="absolute inset-0 border-2 border-dashed border-emerald-500/30 rounded-full animate-spin [animation-duration:15s] pointer-events-none"></div>
+                <div class="absolute inset-2 border border-emerald-400/40 rounded-full animate-pulse pointer-events-none"></div>
+                <!-- Іконка блоку у центрі -->
+                <i class="fa-solid fa-cubes text-3xl text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] z-10"></i>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-none">
+                Auto-Packer <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">Utility</span>
+            </h1>
+            
+            <!-- Простий опис для новачків -->
+            <p class="text-slate-400 text-xs md:text-sm mt-4 max-w-lg leading-relaxed font-semibold" data-i18n="main-desc">
+                Найпростіший спосіб завантажити будь-яку карту на ваш Minecraft сервер за 1 хвилину! Просто закиньте архів — сайт сам підготує світ без помилок та допоможе підключити ресурспак.
+            </p>
+        </header>
+
+        <!-- Неонові Pills-теги з твого зображення (Розміщено по центру під описом) -->
+        <div class="flex flex-wrap justify-center gap-6 text-xs md:text-sm font-bold text-white mb-10">
+            <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-950/40">
+                    <i class="fa-solid fa-bolt text-[10px]"></i>
+                </span>
+                <span data-i18n="tag-fast">Швидко</span>
+            </div>
+            <span class="text-emerald-500/30 self-center hidden md:inline">•</span>
+            <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-950/40">
+                    <i class="fa-solid fa-leaf text-[10px]"></i>
+                </span>
+                <span data-i18n="tag-easy">Легко</span>
+            </div>
+            <span class="text-emerald-500/30 self-center hidden md:inline">•</span>
+            <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-950/40">
+                    <i class="fa-solid fa-gear text-[10px]"></i>
+                </span>
+                <span data-i18n="tag-auto">Автоматично</span>
+            </div>
+        </div>
+
+        <!-- Меню перемикання (3 менюшки) -->
+        <div class="bg-slate-950/60 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800/80 flex flex-wrap gap-1 mb-8">
+            <button onclick="switchTab('tab-properties')" id="btn-properties" class="tab-btn flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-file-lines"></i> <span data-i18n="menu-prop">server.properties</span>
+            </button>
+            <button onclick="switchTab('tab-upload')" id="btn-upload" class="tab-btn flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800/50">
+                <i class="fa-solid fa-file-zipper"></i> <span data-i18n="menu-edit">Редагувати архів</span>
+            </button>
+            <button onclick="switchTab('tab-instructions')" id="btn-instructions" class="tab-btn flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800/50">
+                <i class="fa-solid fa-circle-info"></i> <span data-i18n="menu-help">Як це працює?</span>
+            </button>
+        </div>
+
+        <!-- Контентна зона -->
+        <main class="glow-card border border-emerald-500/15 rounded-[24px] p-6 md:p-8 min-h-[350px] flex flex-col justify-between">
+            
+            <!-- Вкладка 1: server.properties -->
+            <div id="tab-properties" class="tab-content block">
+                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span data-i18n="prop-title">Налаштування server.properties</span>
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-2 leading-relaxed" data-i18n="prop-desc">Ти можеш відредагувати цей конфіг перед завантаженням архіву.</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <!-- Кнопки керування конфігом -->
+                        <button onclick="toggleEditConfig()" id="btn-edit" class="flex items-center gap-2 bg-slate-900/60 hover:bg-emerald-500 hover:text-slate-950 text-emerald-400 font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 active:scale-95 border border-emerald-500/20 hover:border-transparent">
+                            <i id="edit-icon" class="fa-solid fa-pen-to-square"></i>
+                            <span id="edit-text" data-i18n="btn-edit">Редагувати</span>
+                        </button>
+                        <button onclick="resetConfig()" id="btn-reset" class="flex items-center gap-2 bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 active:scale-95 border border-slate-800/50 hover:border-transparent">
+                            <i id="reset-icon" class="fa-solid fa-rotate-left"></i>
+                            <span id="reset-text" data-i18n="btn-reset">Скинути</span>
+                        </button>
+                        <button onclick="copyConfig()" id="btn-copy" class="flex items-center gap-2 bg-slate-900/60 hover:bg-emerald-500 hover:text-slate-950 text-emerald-400 font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 active:scale-95 border border-emerald-500/20 hover:border-transparent">
+                            <i class="fa-regular fa-copy"></i>
+                            <span id="copy-text" data-i18n="btn-copy">Скопіювати</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Вікно з кодом -->
+                <div id="code-container" class="relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl transition-all duration-300">
+                    <div class="flex items-center justify-between px-4 py-3 bg-slate-900/90 border-b border-slate-800/50 text-xs text-slate-500">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+                            <span id="editor-status" class="ml-2 font-medium" data-i18n="editor-status-view">server.properties (лише перегляд)</span>
+                        </div>
+                        <span class="code-font text-emerald-500/60">server.properties</span>
+                    </div>
+                    
+                    <textarea id="config-text" class="w-full h-[420px] p-6 bg-transparent code-font text-sm leading-loose text-emerald-400/90 focus:outline-none resize-none border-none overflow-y-auto block" readonly spellcheck="false">allow-flight=true
+max-players=4
+motd=Проходження Карт
+online-mode=false
+require-resource-pack=true
+resource-pack=
+resource-pack-id=
+resource-pack-prompt=
+resource-pack-sha1=
+spawn-protection=0
+enable-command-block=true</textarea>
+                </div>
+            </div>
+
+            <!-- Вкладка 2: Редагувати архів -->
+            <div id="tab-upload" class="tab-content hidden">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-emerald-400"></i>
+                        <span data-i18n="upload-title">Налаштування архіву карти та ресурспаку</span>
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-2 leading-relaxed" data-i18n="upload-desc">Перетягніть сюди оригінальний ZIP-файл карти, завантажений з інтернету.</p>
+                </div>
+
+                <!-- НАЛАШТУВАННЯ ХОСТИНГУ -->
+                <div class="p-5 bg-slate-950/40 border border-emerald-500/10 rounded-2xl mb-6">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-gears"></i> <span data-i18n="host-settings-title">Налаштування перенаправлення</span>
+                    </h3>
+                    <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enable-redirect" class="rounded border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500/20 w-4 h-4 cursor-pointer" onchange="toggleRedirectInput()">
+                            <label for="enable-redirect" class="text-xs text-slate-300 cursor-pointer select-none" data-i18n="host-redirect-label">Відкривати панель хостингу після пакування</label>
+                        </div>
+                        <input type="url" id="custom-host-url" placeholder="https://..." class="hidden flex-1 bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-xs text-emerald-400 focus:outline-none w-full" data-i18n-placeholder="host-placeholder">
+                    </div>
+                </div>
+
+                <!-- Зона Drag & Drop -->
+                <div id="dropzone" class="border-2 border-dashed border-emerald-500/20 hover:border-emerald-500/60 bg-slate-950/40 rounded-[20px] p-8 text-center transition-all duration-300 cursor-pointer flex flex-col items-center justify-center min-h-[180px] group">
+                    <i class="fa-solid fa-file-zipper text-4xl text-slate-500 group-hover:text-emerald-400 transition-colors duration-300 mb-3"></i>
+                    <p class="text-sm font-semibold text-white mb-1" data-i18n="drop-title">Перетягніть сюди файл карти (.zip)</p>
+                    <p class="text-xs text-slate-500 mb-4" data-i18n="drop-subtitle">або натисніть кнопку нижче, щоб вибрати його</p>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="document.getElementById('zip-input').click()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors" data-i18n="btn-select-file">
+                            Вибрати ZIP-архів
+                        </button>
+                    </div>
+
+                    <input type="file" id="zip-input" class="hidden" accept=".zip">
+                </div>
+
+                <!-- Спінер завантаження -->
+                <div id="loading-box" class="hidden mt-4 p-6 bg-slate-950/50 border border-slate-800 rounded-xl text-center">
+                    <i class="fa-solid fa-circle-notch animate-spin text-3xl text-emerald-500 mb-3 animate-infinite"></i>
+                    <p id="loading-box-text" class="text-sm font-semibold text-white animate-pulse" data-i18n="loading-text">Аналіз структури архіву...</p>
+                    <p class="text-xs text-slate-400 mt-1" data-i18n="loading-subtext">Будь ласка, зачекайте кілька секунд.</p>
+                </div>
+
+                <!-- ПОКРОКОВИЙ МАЙСТЕР -->
+                <div id="wizard-box" class="hidden mt-6 space-y-6">
+                    <div id="rp-detected-banner" class="p-4 bg-emerald-950/20 border border-emerald-500/25 rounded-xl flex items-start gap-3">
+                        <i class="fa-solid fa-wand-magic-sparkles text-emerald-400 text-lg mt-0.5 animate-pulse"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-white" id="rp-detected-title">Виявлено вбудований ресурспак!</p>
+                            <!-- Повідомлення-порада про окремо завантажений ресурспак -->
+                            <p class="text-xs text-emerald-500/80 mt-2 leading-relaxed font-medium" data-i18n="rp-external-tip">💡 Порада: Якщо ви завантажили ресурспак окремо з сайту карти, пріоритетно завантажуйте на mc-packs.net саме його, а не витягнуту нами версію. Дякуємо за увагу!</p>
+                        </div>
+                    </div>
+
+                    <!-- Крок 1 -->
+                    <div class="p-6 rounded-2xl bg-[#070b13]/80 border border-emerald-500/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex-1 space-y-1">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider" data-i18n="step1-tag">Крок 1</span>
+                            <h3 class="text-sm font-bold text-white mt-2" data-i18n="step1-title">Скачати ресурспак окремо</h3>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed" data-i18n="step1-desc">Отримайте файл ресурспаку на комп'ютер та завантажте його на mc-packs.net.</p>
+                        </div>
+                        <button onclick="stepOneDownloadAndOpen()" id="btn-step-1" class="w-full md:w-auto flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-3 rounded-xl transition-all">
+                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                            <span id="btn-step-1-text" data-i18n="step1-btn">Скачати та відкрити mc-packs.net</span>
+                        </button>
+                    </div>
+
+                    <!-- Крок 2 -->
+                    <div id="wizard-step-2" class="p-6 rounded-2xl bg-[#070b13]/80 border border-emerald-500/15 space-y-4 opacity-40 pointer-events-none transition-opacity duration-300">
+                        <div class="space-y-1">
+                            <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider" data-i18n="step2-tag">Крок 2</span>
+                            <h3 class="text-sm font-bold text-white mt-2" data-i18n="step2-title">Вставити скопійований блок тексту</h3>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed" data-i18n="step2-desc">Скопіюйте блок тексту з mc-packs.net та вставте його сюди повністю.</p>
+                        </div>
+                        <div class="relative">
+                            <textarea id="rp-url-input" oninput="validateWizardStep2()" placeholder="resource-pack=..." class="w-full h-32 bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-xs md:text-sm text-emerald-400 code-font focus:outline-none focus:ring-1 focus:ring-emerald-500/30 resize-none" data-i18n-placeholder="step2-placeholder"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- ФІНАЛЬНА КНОПКА З МАЙСТРОМ -->
+                    <div class="flex justify-end pt-2">
+                        <button onclick="processAndRedirectWizard()" id="btn-submit-wizard" class="w-full md:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:pointer-events-none" disabled>
+                            <span class="btn-text">Скачати архів</span>
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ПРОСТА ФІНАЛЬНА КНОПКА -->
+                <div id="simple-submit-box" class="hidden mt-6 flex justify-end">
+                    <button onclick="processAndRedirectSimple()" id="btn-submit-simple" class="w-full md:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95">
+                        <span class="btn-text">Згенерувати готовий архів</span>
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </div>
+
+                <!-- Статус архіву -->
+                <div id="file-status-box" class="hidden mt-4 p-4 bg-emerald-950/20 border border-emerald-500/25 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-white" id="file-count-text">Архів завантажено</p>
+                            <p class="text-xs text-slate-400" id="file-details"></p>
+                        </div>
+                    </div>
+                    <button onclick="resetFiles()" class="text-slate-500 hover:text-red-400 text-xs transition-colors" data-i18n="btn-cancel">
+                        Скасувати
+                    </button>
+                </div>
+            </div>
+
+            <!-- Вкладка 3: Як це працює та Disqus Відгуки (З дизайну макету) -->
+            <div id="tab-instructions" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 leading-relaxed">
+                    
+                    <!-- Ліва колонка: Покроковий алгоритм -->
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-extrabold text-emerald-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]">
+                            <i class="fa-solid fa-circle-question"></i> <span data-i18n="help-title">Як запустити карту з ресурспаком?</span>
+                        </h2>
+                        
+                        <div class="p-6 rounded-[24px] bg-[#070b13]/80 border border-emerald-500/15 space-y-5">
+                            <h3 class="font-bold text-white text-sm" data-i18n="help-steps-title">Пошаговый алгоритм запуска:</h3>
+                            
+                            <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">1</div>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-1-desc">Перетащите ZIP-архив карты во вкладку «Редактировать архив».</p>
+                            </div>
+                            <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">2</div>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold font-medium" data-i18n="step-2-desc">Нажмите «Шаг 1», скачайте ресурспак и забросьте его на mc-packs.net.</p>
+                            </div>
+                            <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый блок с mc-packs в поле «Шаг 2» и нажмите финальную кнопку.</p>
+                            </div>
+                            <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">4</div>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-4-desc">Сайт сформирует легкий архив server_ready.zip для вашего хостингу!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Права колонка: Disqus коментарі (Стилізовані у форму макету) -->
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-extrabold text-emerald-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]">
+                            <i class="fa-solid fa-comments"></i> <span data-i18n="help-feedback-title">Отзывы и предложения</span>
+                        </h2>
+                        
+                        <div class="p-6 rounded-[24px] bg-[#070b13]/80 border border-emerald-500/15 space-y-4">
+                            <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="help-feedback-desc">
+                                Нашли баг или есть идея по улучшению? Напишите нам!
+                            </p>
+                            <!-- Блок Disqus -->
+                            <div id="disqus_thread" class="min-h-[150px]"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Футер з кнопкою Discord у стилі макету -->
+    <footer class="text-center py-8 border-t border-slate-900/80 bg-slate-950/20 text-slate-500 text-xs space-y-4">
+        <div class="flex justify-center gap-4">
+            <a href="https://discord.gg/QaaXPVyBmh" target="_blank" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-indigo-600/15 active:scale-95 text-xs">
+                <i class="fa-brands fa-discord"></i> Join Discord
+            </a>
+        </div>
+        
+        <!-- Округлая плашка внизу как на фото -->
+        <div class="max-w-md mx-auto py-3 px-6 bg-[#090d16]/80 border border-slate-800 rounded-full shadow-lg">
+            <p class="text-slate-500 font-semibold text-xs flex items-center justify-center gap-1.5">
+                <span>© Auto-Packer Utility</span>
+                <span class="text-slate-700">•</span>
+                <span data-i18n="footer-text">Сделано для быстрой подготовки файлов сервера.</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Логіка та безпечна ініціалізація (БЕЗ ЖОДНИХ КРИТИЧНИХ ПОМИЛОК) -->
+    <script>
+        // Словник перекладів
+        const translations = {
+            uk: {
+                "badge": "Auto-Packer Utility",
+                "main-title": "Auto-Packer Utility",
+                "main-desc": "Найпростіший спосіб завантажити будь-яку карту на ваш Minecraft сервер за 1 хвилину! Просто закиньте архів — сайт сам підготує світ без помилок та допоможе підключити ресурспак.",
+                "menu-prop": "server.properties",
+                "menu-edit": "Редагувати архів",
+                "menu-help": "Як це працює?",
+                "prop-title": "Налаштування server.properties",
+                "prop-desc": "Ти можеш відредагувати цей конфіг перед завантаженням архіву.",
+                "btn-edit": "Редагувати",
+                "btn-reset": "Скинути",
+                "btn-copy": "Скопіювати",
+                "upload-title": "Налаштування архіву карти та ресурспаку",
+                "upload-desc": "Перетягніть сюди оригінальний ZIP-файл карти, завантажений з інтернету.",
+                "host-settings-title": "Налаштування перенаправлення",
+                "host-redirect-label": "Відкривати панель хостингу після пакування",
+                "host-placeholder": "Вставте посилання на ваш файл-менеджер хостингу (наприклад, MagmaNode, Aternos)...",
+                "drop-title": "Перетягніть сюди файл карти (.zip)",
+                "drop-subtitle": "або натисніть кнопку нижче, щоб вибрати його",
+                "btn-select-file": "Вибрати ZIP-архів",
+                "loading-text": "Аналіз структури архіву...",
+                "loading-subtext": "Будь ласка, зачекайте кілька секунд.",
+                "step1-tag": "Крок 1",
+                "step1-title": "Скачати ресурспак окремо",
+                "step1-desc": "Отримайте файл ресурспаку на комп'ютер та завантажте його на mc-packs.net.",
+                "step1-btn": "Скачати та відкрити mc-packs.net",
+                "step2-tag": "Крок 2",
+                "step2-title": "Вставити скопійований блок тексту",
+                "step2-desc": "Скопіюйте блок тексту з mc-packs.net та вставте його сюди повністю.",
+                "step2-placeholder": "Вставте сюди весь блок з mc-packs.net...\n\nПриклад:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...",
+                "btn-finish-wizard": "Скачати архів",
+                "btn-finish-simple": "Скачати архів",
+                "btn-cancel": "Скасувати",
+                "help-title": "Як запустити карту з ресурспаком?",
+                "help-steps-title": "Покроковий алгоритм запуску:",
+                "step-1-desc": "Перетягніть ZIP-архів карти у вкладку «Редагувати архів».",
+                "step-2-desc": "Натисніть «Крок 1», завантажте ресурспак і закиньте його на mc-packs.net.",
+                "step-3-desc": "Вставте скопійований блок з mc-packs у поле «Крок 2» та натисніть фінальну кнопку.",
+                "step-4-desc": "Сайт сформує легкий архів server_ready.zip для вашого хостингу!",
+                "editor-status-view": "server.properties (лише перегляд)",
+                "tag-fast": "Швидко",
+                "tag-easy": "Легко",
+                "tag-auto": "Автоматично",
+                "footer-text": "Сделано для быстрой подготовки файлов сервера.",
+                "help-feedback-title": "💬 Відгуки та пропозиції",
+                "help-feedback-desc": "Знайшли баг або маєте ідею щодо покращення? Напишіть нам!",
+                "rp-external-tip": "💡 <b>Порада:</b> Якщо ви завантажили ресурспак окремо з сайту карти, пріоритетно завантажуйте на mc-packs.net саме його, а не витягнуту нами версію. Дякуємо за увагу!"
+            },
+            ru: {
+                "badge": "Auto-Packer Utility",
+                "main-title": "Auto-Packer Utility",
+                "main-desc": "Самый простой способ загрузить любую карту на ваш Minecraft сервер за 1 минуту! Просто забросьте архив — сайт сам подготовит мир без ошибок и поможет подключить ресурспак.",
+                "menu-prop": "server.properties",
+                "menu-edit": "Редактировать архив",
+                "menu-help": "Как это работает?",
+                "prop-title": "Настройка server.properties",
+                "prop-desc": "Ты можешь отредактировать этот конфиг перед загрузкой архива.",
+                "btn-edit": "Редактировать",
+                "btn-reset": "Сбросить",
+                "btn-copy": "Копировать",
+                "upload-title": "Настройка архива карты и ресурспака",
+                "upload-desc": "Перетащите сюда оригинальный ZIP-файл карты, скачанный из интернета.",
+                "host-settings-title": "Настройка перенаправления",
+                "host-redirect-label": "Открывать панель хостинга после упаковки",
+                "host-placeholder": "Вставьте ссылку на ваш file-менеджер хостинга (например, MagmaNode, Aternos)...",
+                "drop-title": "Перетащите сюда файл карты (.zip)",
+                "drop-subtitle": "или нажмите кнопку ниже, чтобы выбрать его",
+                "btn-select-file": "Выбрать ZIP-архив",
+                "loading-text": "Анализ структуры архива...",
+                "loading-subtext": "Пожалуйста, подождите несколько секунд.",
+                "step1-tag": "Шаг 1",
+                "step1-title": "Скачать ресурспак отдельно",
+                "step1-desc": "Получите файл ресурспака на компьютер и загрузите его на mc-packs.net.",
+                "step1-btn": "Скачать и открыть mc-packs.net",
+                "step2-tag": "Шаг 2",
+                "step2-title": "Вставить скопированный блок текста",
+                "step2-desc": "Скопируйте блок текста с mc-packs.net и вставьте его сюда полностью.",
+                "step2-placeholder": "Вставьте сюда весь block с mc-packs.net...\n\nПример:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...",
+                "btn-finish-wizard": "Скачать архив",
+                "btn-finish-simple": "Скачать архив",
+                "btn-cancel": "Отмена",
+                "help-title": "Как запустить карту с ресурспаком?",
+                "help-steps-title": "Пошаговый алгоритм запуска:",
+                "step-1-desc": "Перетащите ZIP-архив карты во вкладку «Редактировать архив».",
+                "step-2-desc": "Нажмите «Шаг 1», скачайте ресурспак и забросьте его на mc-packs.net.",
+                "step-3-desc": "Вставьте копируемый блок с mc-packs в поле «Шаг 2» и нажмите финальную кнопку.",
+                "step-4-desc": "Сайт сформирует легкий архив server_ready.zip для вашего хостинга!",
+                "editor-status-view": "server.properties (только просмотр)",
+                "tag-fast": "Быстро",
+                "tag-easy": "Легко",
+                "tag-auto": "Автоматически",
+                "footer-text": "Сделано для быстрой подготовки файлов сервера.",
+                "help-feedback-title": "💬 Отзывы и предложения",
+                "help-feedback-desc": "Нашли баг или есть идея по улучшению? Напишите нам!",
+                "rp-external-tip": "💡 <b>Совет:</b> Если вы скачали ресурспак отдельно с сайта карты, приоритетно загружайте на mc-packs.net именно его, а не извлеченную нами версию. Спасибо за внимание!"
+            }
+        };
+
+        // Безпечні обгортки для роботи з локальним сховищем (захищають від SecurityError у file://)
+        function safeGetStorage(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+        function safeSetStorage(key, value) {
+            try { localStorage.setItem(key, value); } catch (e) {}
+        }
+
+        // Отримання поточної мови користувача
+        function getActiveLang() {
+            const userLang = (navigator.language || navigator.userLanguage || "uk").toLowerCase();
+            return userLang.startsWith("uk") ? "uk" : "ru";
+        }
+
+        // Динамічне оновлення тексту кнопки відповідно до мови та налаштувань перенаправлення
+        function updateButtonText() {
+            const enableRedirectEl = document.getElementById('enable-redirect');
+            const customHostUrlEl = document.getElementById('custom-host-url');
+            if (!enableRedirectEl || !customHostUrlEl) return;
+
+            const enableRedirect = enableRedirectEl.checked;
+            const customHostUrl = customHostUrlEl.value.trim();
+            const lang = getActiveLang();
+
+            let label = "";
+            if (enableRedirect && customHostUrl) {
+                label = lang === "uk" ? "Скачати архів та відкрити хостинг" : "Скачать архив и открыть хостинг";
+            } else {
+                label = lang === "uk" ? "Скачати архів" : "Скачать архив";
+            }
+
+            const btnWizard = document.getElementById('btn-submit-wizard');
+            const btnSimple = document.getElementById('btn-submit-simple');
+
+            if (btnWizard) {
+                const textSpan = btnWizard.querySelector('span') || btnWizard;
+                textSpan.innerText = label;
+            }
+            if (btnSimple) {
+                const textSpan = btnSimple.querySelector('span') || btnSimple;
+                textSpan.innerText = label;
+            }
+        }
+
+        // Визначення мови браузера
+        function initLanguage() {
+            const lang = getActiveLang();
+            
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (translations[lang][key]) el.innerText = translations[lang][key];
+            });
+
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+                const key = el.getAttribute("data-i18n-placeholder");
+                if (translations[lang][key]) el.placeholder = translations[lang][key];
+            });
+
+            updateButtonText();
+        }
+
+        let uploadedZipBlob = null;
+        let uploadedFileName = "";
+        let isEditing = false;
+        let detectedResourcePackBlob = null;
+        let detectedResourcePackName = "";
+        let stepOneCompleted = false;
+
+        const defaultConfig = `allow-flight=true
+max-players=4
+motd=Проходження Карт
+online-mode=false
+require-resource-pack=true
+resource-pack=
+resource-pack-id=
+resource-pack-prompt=
+resource-pack-sha1=
+spawn-protection=0
+enable-command-block=true`;
+
+        // БЕЗПЕЧНА ІНІЦІАЛІЗАЦІЯ ВСІХ ПОДІЙ ПІСЛЯ ЗАВАНТАЖЕННЯ DOM
+        // Це усуває всі помилки в консолі і гарантує, що кнопки будуть повністю робочими!
+        window.addEventListener('DOMContentLoaded', () => {
+            initLanguage();
+
+            const enableRedirect = safeGetStorage('minecraft_packer_enable_redirect') === 'true';
+            const savedUrl = safeGetStorage('minecraft_packer_host_url') || "";
+            
+            const enableRedirectEl = document.getElementById('enable-redirect');
+            const customHostUrlEl = document.getElementById('custom-host-url');
+
+            if (enableRedirectEl) enableRedirectEl.checked = enableRedirect;
+            if (customHostUrlEl) {
+                customHostUrlEl.value = savedUrl;
+                if (enableRedirect) {
+                    customHostUrlEl.classList.remove('hidden');
+                }
+                customHostUrlEl.addEventListener('input', (e) => {
+                    safeSetStorage('minecraft_packer_host_url', e.target.value.trim());
+                    updateButtonText();
+                });
+            }
+
+            // Налаштування Drag & Drop
+            const dropzone = document.getElementById('dropzone');
+            if (dropzone) {
+                dropzone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('border-emerald-500', 'bg-emerald-950/10');
+                });
+                dropzone.addEventListener('dragleave', () => {
+                    dropzone.classList.remove('border-emerald-500', 'bg-emerald-950/10');
+                });
+                dropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('border-emerald-500', 'bg-emerald-950/10');
+                    if (e.dataTransfer.files.length > 0) {
+                        handleZipFile(e.dataTransfer.files[0]);
+                    }
+                });
+            }
+
+            // Інпут вибору файлу
+            const zipInput = document.getElementById('zip-input');
+            if (zipInput) {
+                zipInput.addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) handleZipFile(e.target.files[0]);
+                });
+            }
+
+            // Безпечне підключення Disqus коментарів
+            const disqusThread = document.getElementById('disqus_thread');
+            if (disqusThread) {
+                var shortname = 'auto-packer-utility';
+                if (shortname && !shortname.includes('ЗАМІНИ')) {
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://' + shortname + '.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                } else {
+                    disqusThread.innerHTML = `
+                        <div class="text-center py-8 px-4 text-slate-500 border border-dashed border-slate-800 rounded-xl bg-slate-950/20">
+                            <i class="fa-solid fa-comments text-2xl mb-2 text-emerald-500/30"></i>
+                            <p class="text-xs font-semibold text-slate-400">Тут з'явиться вікно коментарів Disqus</p>
+                            <p class="text-[10px] text-slate-500 mt-1">Впишіть свій Shortname у коді index.html після налаштування акаунту.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            updateButtonText();
+        });
+
+        function toggleRedirectInput() {
+            const checkbox = document.getElementById('enable-redirect');
+            const urlInput = document.getElementById('custom-host-url');
+            if (checkbox) {
+                if (checkbox.checked) {
+                    if (urlInput) urlInput.classList.remove('hidden');
+                    safeSetStorage('minecraft_packer_enable_redirect', 'true');
+                } else {
+                    if (urlInput) urlInput.classList.add('hidden');
+                    safeSetStorage('minecraft_packer_enable_redirect', 'false');
+                }
+            }
+            updateButtonText();
+        }
+
+        // Функція перевірки вводу на Кроці 2
+        function validateWizardStep2() {
+            const inputEl = document.getElementById('rp-url-input');
+            const submitBtn = document.getElementById('btn-submit-wizard');
+            if (!inputEl || !submitBtn) return;
+
+            const pastedText = inputEl.value.trim();
+            
+            // Кнопка активна тільки якщо Крок 1 зроблений і поле на Кроці 2 не порожнє
+            if (stepOneCompleted && pastedText.length > 0) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.className = "tab-btn flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800/50";
+            });
+
+            const activeBtnId = 'btn-' + tabId.replace('tab-', '');
+            const activeBtn = document.getElementById(activeBtnId);
+            if (activeBtn) activeBtn.className = "tab-btn flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20";
+        }
+
+        function toggleEditConfig() {
+            const configElement = document.getElementById('config-text');
+            const editBtn = document.getElementById('btn-edit');
+            const editText = document.getElementById('edit-text');
+            const editIcon = document.getElementById('edit-icon');
+            const codeContainer = document.getElementById('code-container');
+            const editorStatus = document.getElementById('editor-status');
+
+            if (!configElement || !editBtn || !editText || !editIcon || !codeContainer || !editorStatus) return;
+
+            isEditing = !isEditing;
+            const lang = getActiveLang();
+
+            if (isEditing) {
+                configElement.removeAttribute('readonly');
+                configElement.readOnly = false;
+                configElement.focus();
+                
+                editBtn.classList.remove('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
+                editBtn.classList.add('bg-emerald-500', 'text-slate-950');
+                
+                editText.innerText = lang === "uk" ? "Зберегти" : "Сохранить";
+                editText.removeAttribute('data-i18n');
+
+                editIcon.className = "fa-solid fa-floppy-disk";
+                
+                codeContainer.classList.add('edit-mode-active');
+                editorStatus.innerText = lang === "uk" ? "server.properties (Редагування...)" : "server.properties (Редактирование...)";
+                editorStatus.removeAttribute('data-i18n');
+                editorStatus.classList.add('text-emerald-400');
+            } else {
+                configElement.setAttribute('readonly', 'true');
+                configElement.readOnly = true;
+                
+                editBtn.classList.add('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
+                editBtn.classList.remove('bg-emerald-500', 'text-slate-950');
+                
+                editText.innerText = lang === "uk" ? "Редагувати" : "Редактировать";
+                editText.setAttribute('data-i18n', 'btn-edit');
+
+                editIcon.className = "fa-solid fa-pen-to-square";
+                
+                codeContainer.classList.remove('edit-mode-active');
+                editorStatus.innerText = lang === "uk" ? "server.properties (Збережено)" : "server.properties (Сохранено)";
+                editorStatus.classList.remove('text-emerald-400');
+
+                setTimeout(() => {
+                    if(!isEditing) {
+                        editorStatus.innerText = lang === "uk" ? "server.properties (лише перегляд)" : "server.properties (только просмотр)";
+                        editorStatus.setAttribute('data-i18n', 'editor-status-view');
+                    }
+                }, 2000);
+            }
+        }
+
+        // Оновлення конфігу: перезаписує ТІЛЬКИ ті поля, які наразі ПУСТІ
+        function updateConfigWithResourcePack(sha1, url) {
+            const configElement = document.getElementById('config-text');
+            if (!configElement) return;
+
+            let propertiesText = configElement.value;
+            let lines = propertiesText.split(/\r?\n/);
+
+            const defaultData = {
+                "require-resource-pack": "true",
+                "resource-pack": url,
+                "resource-pack-sha1": sha1,
+                "resource-pack-id": "",
+                "resource-pack-prompt": `{"text":"Our server uses a custom resource pack!", "color":"gold"}`
+            };
+
+            const updatedKeys = new Set();
+
+            lines = lines.map(line => {
+                const index = line.indexOf("=");
+                if (index !== -1) {
+                    const key = line.substring(0, index).trim();
+                    const currentValue = line.substring(index + 1).trim();
+
+                    if (defaultData.hasOwnProperty(key)) {
+                        updatedKeys.add(key);
+                        if (currentValue !== "") return line; 
+                        return `${key}=${defaultData[key]}`;
+                    }
+                }
+                return line;
+            });
+
+            // Додаємо відсутні поля
+            for (const key in defaultData) {
+                if (!updatedKeys.has(key)) {
+                    lines.push(`${key}=${defaultData[key]}`);
+                }
+            }
+
+            configElement.value = lines.join("\n");
+        }
+
+        // Парсинг блоку з mc-packs для отримання об'єкта параметрів
+        function parseMcPacksBlock(pastedText) {
+            const trimmedInput = pastedText.trim();
+            if (!trimmedInput) return null;
+
+            let url = "";
+            let sha1 = ""; 
+            let id = "";
+            let prompt = `{"text":"Our server uses a custom resource pack!", "color":"gold"}`; 
+            let requireRP = "true";
+
+            if (trimmedInput.includes("=")) {
+                const lines = trimmedInput.split(/\r?\n/);
+                lines.forEach(line => {
+                    const cleanLine = line.trim();
+                    if (cleanLine.startsWith("#") || !cleanLine.includes("=")) return;
+
+                    const index = cleanLine.indexOf("=");
+                    const key = cleanLine.substring(0, index).trim();
+                    const val = cleanLine.substring(index + 1).trim();
+
+                    if (key === "resource-pack") url = val;
+                    if (key === "resource-pack-sha1") sha1 = val;
+                    if (key === "resource-pack-id") id = val;
+                    if (key === "resource-pack-prompt") prompt = val;
+                    if (key === "require-resource-pack") requireRP = val;
+                });
+            } else if (trimmedInput.startsWith("http")) {
+                url = trimmedInput;
+            } else {
+                return null;
+            }
+
+            return {
+                "require-resource-pack": requireRP,
+                "resource-pack": url,
+                "resource-pack-sha1": sha1,
+                "resource-pack-id": id,
+                "resource-pack-prompt": prompt
+            };
+        }
+
+        // Поєднання конфігу з даними ресурспаку (тільки в пам'яті перед ZIP)
+        function mergeRPDataIntoProperties(propertiesText, rpData) {
+            if (!rpData) return propertiesText;
+
+            let lines = propertiesText.split(/\r?\n/);
+            const updatedKeys = new Set();
+
+            lines = lines.map(line => {
+                const index = line.indexOf("=");
+                if (index !== -1) {
+                    const key = line.substring(0, index).trim();
+                    const currentValue = line.substring(index + 1).trim();
+
+                    if (rpData.hasOwnProperty(key)) {
+                        updatedKeys.add(key);
+                        if (currentValue !== "") return line; 
+                        return `${key}=${rpData[key]}`;
+                    }
+                }
+                return line;
+            });
+
+            for (const key in rpData) {
+                if (!updatedKeys.has(key)) {
+                    lines.push(`${key}=${rpData[key]}`);
+                }
+            }
+
+            return lines.join("\n");
+        }
+
+        // Скидання конфігурації
+        function resetConfig() {
+            const configElement = document.getElementById('config-text');
+            if (!configElement) return;
+
+            configElement.value = defaultConfig;
+
+            const resetBtn = document.getElementById('btn-reset');
+            const resetText = document.getElementById('reset-text');
+            const resetIcon = document.getElementById('reset-icon');
+            const editorStatus = document.getElementById('editor-status');
+
+            const lang = getActiveLang();
+
+            if (resetBtn) {
+                resetBtn.classList.remove('text-slate-400', 'border-slate-800');
+                resetBtn.classList.add('text-emerald-400', 'border-emerald-500/20');
+            }
+            if (resetText) resetText.innerText = lang === "uk" ? "Скинуто!" : "Сброшено!";
+            if (resetIcon) resetIcon.className = "fa-solid fa-check";
+
+            if (editorStatus) {
+                editorStatus.innerText = lang === "uk" ? "server.properties (скинуто до стандартних)" : "server.properties (сброшено до стандартных)";
+                editorStatus.classList.add('text-emerald-400');
+                editorStatus.removeAttribute('data-i18n');
+            }
+
+            setTimeout(() => {
+                if (resetBtn) {
+                    resetBtn.classList.add('text-slate-400', 'border-slate-800');
+                    resetBtn.classList.remove('text-emerald-400', 'border-emerald-500/20');
+                }
+                if (resetText) resetText.innerText = lang === "uk" ? "Скинути" : "Сбросить";
+                if (resetIcon) resetIcon.className = "fa-solid fa-rotate-left";
+                
+                if (editorStatus) {
+                    if (!isEditing) {
+                        editorStatus.innerText = lang === "uk" ? "server.properties (лише перегляд)" : "server.properties (только просмотр)";
+                        editorStatus.setAttribute('data-i18n', 'editor-status-view');
+                        editorStatus.classList.remove('text-emerald-400');
+                    } else {
+                        editorStatus.innerText = lang === "uk" ? "server.properties (Редагування...)" : "server.properties (Редактирование...)";
+                    }
+                }
+            }, 1500);
+        }
+
+        // Копіювання тексту
+        function copyConfig() {
+            const configText = document.getElementById('config-text').value;
+            navigator.clipboard.writeText(configText).then(() => {
+                const copyBtn = document.getElementById('btn-copy');
+                const copyTextSpan = document.getElementById('copy-text');
+                
+                if (copyBtn) {
+                    copyBtn.classList.remove('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
+                    copyBtn.classList.add('bg-emerald-500', 'text-slate-950');
+                }
+                if (copyTextSpan) copyTextSpan.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Скопійовано!';
+
+                setTimeout(() => {
+                    if (copyBtn) {
+                        copyBtn.classList.add('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
+                        copyBtn.classList.remove('bg-emerald-500', 'text-slate-950');
+                    }
+                    if (copyTextSpan) copyTextSpan.innerHTML = 'Скопіювати';
+                }, 2000);
+            });
+        }
+
+        // Інтелектуальний аналіз та пошук ресурспаку у двох рівнях
+        function handleZipFile(file) {
+            if (!file.name.endsWith('.zip')) {
+                alert("Будь ласка, завантажте саме файл у форматі .zip!");
+                return;
+            }
+            uploadedZipBlob = file;
+            uploadedFileName = file.name;
+
+            const dropzone = document.getElementById('dropzone');
+            const loadingBox = document.getElementById('loading-box');
+            const loadingText = document.getElementById('loading-box-text');
+
+            if (dropzone) dropzone.classList.add('hidden');
+            if (loadingBox) loadingBox.classList.remove('hidden');
+            if (loadingText) loadingText.innerText = "Аналіз структури архіву...";
+
+            const originalZip = new JSZip();
+
+            // Читаємо оригінальний ZIP-архів
+            originalZip.loadAsync(file).then(async function(loadedZip) {
+                let levelDatPath = null;
+                let resourcesZipEntry = null;
+                let zipFiles = [];
+
+                // 1. Проходимося по всіх файлах архіву
+                loadedZip.forEach(function (relativePath, zipEntry) {
+                    if (relativePath.endsWith("level.dat")) {
+                        levelDatPath = relativePath;
+                    }
+                    if (relativePath.toLowerCase().endsWith(".zip")) {
+                        zipFiles.push(zipEntry);
+                    }
+                });
+
+                if (!levelDatPath) {
+                    alert("Помилка: Не знайдено файл 'level.dat' всередині архіву. Переконайтеся, що ви завантажили саме карту Minecraft!");
+                    resetFiles();
+                    return;
+                }
+
+                const worldPrefix = levelDatPath.substring(0, levelDatPath.lastIndexOf("level.dat"));
+                let resourcesZipEntryMatch = null;
+
+                if (zipFiles.length > 0) {
+                    let bestScore = -1;
+
+                    zipFiles.forEach(zipEntry => {
+                        let score = 0;
+                        const name = zipEntry.name.toLowerCase();
+                        const isInsideWorld = name.startsWith(worldPrefix.toLowerCase());
+
+                        if (name.endsWith("resources.zip")) {
+                            score += 100;
+                        } else if (name.includes("rp") || name.includes("resource") || name.includes("pack") || name.includes("texture")) {
+                            score += 50;
+                        }
+
+                        if (isInsideWorld) {
+                            score += 10;
+                        } else {
+                            score += 20; 
+                        }
+
+                        if (score > bestScore) {
+                            bestScore = score;
+                            resourcesZipEntryMatch = zipEntry;
+                        }
+                    });
+                    resourcesZipEntry = resourcesZipEntryMatch;
+                }
+
+                const wizardBox = document.getElementById('wizard-box');
+                const simpleBox = document.getElementById('simple-submit-box');
+                const rpTitle = document.getElementById('rp-detected-title');
+                const step2Box = document.getElementById('wizard-step-2');
+                const wizardSubmitBtn = document.getElementById('btn-submit-wizard');
+                const rpUrlInput = document.getElementById('rp-url-input');
+                const step1BtnText = document.getElementById('btn-step-1-text');
+                const step1Btn = document.getElementById('btn-step-1');
+                const fileStatusBox = document.getElementById('file-status-box');
+                const fileCountText = document.getElementById('file-count-text');
+                const fileDetails = document.getElementById('file-details');
+                const simpleSubmitBtn = document.getElementById('btn-submit-simple');
+
+                if (resourcesZipEntry) {
+                    detectedResourcePackBlob = await resourcesZipEntry.async("blob");
+                    detectedResourcePackName = resourcesZipEntry.name.split('/').pop();
+                    
+                    const lang = getActiveLang();
+                    const titleText = lang === "uk" 
+                        ? `Виявлено вбудований ресурспак: "${detectedResourcePackName}"` 
+                        : `Обнаружен встроенный ресурспак: "${detectedResourcePackName}"`;
+                    if (rpTitle) rpTitle.innerText = titleText;
+
+                    updateConfigWithResourcePack("", "");
+
+                    if (wizardBox) wizardBox.classList.remove('hidden');
+                    if (simpleBox) simpleBox.classList.add('hidden');
+
+                    if (step2Box) {
+                        step2Box.classList.add('opacity-40', 'pointer-events-none');
+                    }
+                    if (wizardSubmitBtn) wizardSubmitBtn.disabled = true;
+                    if (rpUrlInput) rpUrlInput.value = "";
+                    stepOneCompleted = false;
+
+                    if (step1Btn) {
+                        step1Btn.className = "w-full md:w-auto flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-3 rounded-xl transition-all";
+                    }
+                    if (step1BtnText) {
+                        step1BtnText.innerText = lang === "uk" ? "Скачати та відкрити mc-packs.net" : "Скачать и открыть mc-packs.net";
+                    }
+                } else {
+                    detectedResourcePackBlob = null;
+                    detectedResourcePackName = "";
+                    if (wizardBox) wizardBox.classList.add('hidden');
+                    if (simpleBox) simpleBox.classList.remove('hidden');
+                }
+
+                if (loadingBox) loadingBox.classList.add('hidden');
+                if (fileStatusBox) fileStatusBox.classList.remove('hidden');
+                if (fileCountText) fileCountText.innerText = `Архів завантажено: "${file.name}"`;
+                
+                if (fileDetails) {
+                    let fileDetailsText = `Розмір: ${(file.size / 1024 / 1024).toFixed(2)} МБ`;
+                    if (resourcesZipEntry) {
+                        fileDetailsText += ` (Виявлено ресурспак: ${detectedResourcePackName})`;
+                    }
+                    fileDetails.innerText = fileDetailsText;
+                }
+                if (simpleSubmitBtn) simpleSubmitBtn.disabled = false;
+                
+                updateButtonText();
+
+            }).catch(function(err) {
+                console.error(err);
+                alert("Помилка під час зчитування структури архіву.");
+                resetFiles();
+            });
+        }
+
+        function stepOneDownloadAndOpen() {
+            if (!detectedResourcePackBlob) return;
+
+            const rpLink = document.createElement('a');
+            rpLink.href = URL.createObjectURL(detectedResourcePackBlob);
+            rpLink.download = detectedResourcePackName || "resources.zip";
+            document.body.appendChild(rpLink);
+            rpLink.click();
+            document.body.removeChild(rpLink);
+
+            window.open("https://mc-packs.net/", "mc_packs_hosting");
+
+            const btn1 = document.getElementById('btn-step-1');
+            if (btn1) {
+                btn1.className = "w-full md:w-auto flex items-center justify-center gap-2 bg-emerald-500/10 text-emerald-400 text-xs font-semibold px-4 py-3 rounded-xl border border-emerald-500/20";
+            }
+            
+            const btn1Text = document.getElementById('btn-step-1-text');
+            const lang = getActiveLang();
+            if (btn1Text) {
+                btn1Text.innerText = lang === "uk" ? "Скачано! Закиньте його на mc-packs" : "Скачано! Забросьте на mc-packs";
+            }
+
+            const step2Box = document.getElementById('wizard-step-2');
+            if (step2Box) step2Box.classList.remove('opacity-40', 'pointer-events-none');
+            
+            const wizardSubmitBtn = document.getElementById('btn-submit-wizard');
+            if (wizardSubmitBtn) wizardSubmitBtn.disabled = true;
+            
+            stepOneCompleted = true;
+        }
+
+        function processAndRedirectWizard() {
+            const inputEl = document.getElementById('rp-url-input');
+            if (inputEl) {
+                const pastedText = inputEl.value;
+                const rpData = parseMcPacksBlock(pastedText);
+                generateFinalServerZip(rpData);
+            }
+        }
+
+        function processAndRedirectSimple() {
+            generateFinalServerZip(null);
+        }
+
+        function generateFinalServerZip(rpData) {
+            if (uploadedZipBlob === null) return;
+
+            if (isEditing) {
+                toggleEditConfig();
+            }
+
+            const submitBtnWizard = document.getElementById('btn-submit-wizard');
+            const submitBtnSimple = document.getElementById('btn-submit-simple');
+            const loadingBox = document.getElementById('loading-box');
+            const statusBox = document.getElementById('file-status-box');
+            const wizardBox = document.getElementById('wizard-box');
+            const simpleBox = document.getElementById('simple-submit-box');
+            const loadingText = document.getElementById('loading-box-text');
+
+            if (statusBox) statusBox.classList.add('hidden');
+            if (wizardBox) wizardBox.classList.add('hidden');
+            if (simpleBox) simpleBox.classList.add('hidden');
+            if (loadingBox) loadingBox.classList.remove('hidden');
+            if (loadingText) loadingText.innerText = "Реструктуризація архіву сервера...";
+            
+            if (submitBtnWizard) submitBtnWizard.disabled = true;
+            if (submitBtnSimple) submitBtnSimple.disabled = true;
+
+            const originalZip = new JSZip();
+
+            originalZip.loadAsync(uploadedZipBlob).then(async function(loadedZip) {
+                const newZip = new JSZip();
+                let levelDatPath = null;
+                
+                loadedZip.forEach(function (relativePath, zipEntry) {
+                    if (relativePath.endsWith("level.dat")) {
+                        levelDatPath = relativePath;
+                    }
+                });
+
+                const prefix = levelDatPath.substring(0, levelDatPath.lastIndexOf("level.dat"));
+
+                const filePromises = [];
+                loadedZip.forEach(function (relativePath, zipEntry) {
+                    if (zipEntry.dir) return;
+
+                    if (detectedResourcePackBlob && relativePath.toLowerCase().endsWith(".zip")) {
+                        return;
+                    }
+
+                    if (relativePath.startsWith(prefix)) {
+                        const relativeToWorld = relativePath.substring(prefix.length);
+                        const newPath = "world/" + relativeToWorld;
+
+                        const promise = zipEntry.async("blob").then(function(content) {
+                            newZip.file(newPath, content);
+                        });
+                        filePromises.push(promise);
+                    }
+                });
+
+                await Promise.all(filePromises);
+
+                let propertiesText = document.getElementById('config-text').value;
+
+                if (rpData) {
+                    propertiesText = mergeRPDataIntoProperties(propertiesText, rpData);
+                }
+
+                newZip.file("server.properties", propertiesText);
+
+                newZip.generateAsync({ type: "blob" }).then(function(content) {
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = URL.createObjectURL(content);
+                    downloadLink.download = "server_ready.zip";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+
+                    if (submitBtnWizard) submitBtnWizard.innerHTML = '<i class="fa-solid fa-check"></i> Оброблено!';
+                    if (loadingBox) loadingBox.classList.add('hidden');
+                    if (statusBox) statusBox.classList.remove('hidden');
+
+                    const enableRedirectEl = document.getElementById('enable-redirect');
+                    const customHostUrlEl = document.getElementById('custom-host-url');
+                    
+                    const enableRedirect = enableRedirectEl ? enableRedirectEl.checked : false;
+                    const customHostUrl = customHostUrlEl ? customHostUrlEl.value.trim() : "";
+
+                    if (enableRedirect && customHostUrl) {
+                        setTimeout(() => {
+                            window.open(customHostUrl, "minecraft_host_panel");
+                            resetFiles();
+                        }, 1200);
+                    } else {
+                        setTimeout(() => {
+                            resetFiles();
+                        }, 1200);
+                    }
+                });
+
+            }).catch(function(err) {
+                console.error(err);
+                alert("Помилка під час зчитування або перепакування архіву. Спробуйте інший файл.");
+                resetFiles();
+            });
+        }
+    </script>
+</body>
+</html>
