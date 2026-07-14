@@ -12,7 +12,6 @@
     
     <!-- Іконка сайту (Favicon) для відображення в Google та на вкладці -->
     <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/minecraft-logo.png">
-    <meta name="google-site-verification" content="2lD7bVxaA6Gl8UPen_uEbtXiFuw2p-H_M_yMw8C3X0A" />
 
     <!-- Підключення Tailwind CSS для стилів -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -220,7 +219,7 @@ enable-command-block=true</textarea>
                 <div id="loading-box" class="hidden mt-4 p-6 bg-slate-950/50 border border-slate-800 rounded-xl text-center">
                     <i class="fa-solid fa-circle-notch animate-spin text-3xl text-emerald-500 mb-3 animate-infinite"></i>
                     <p id="loading-box-text" class="text-sm font-semibold text-white animate-pulse" data-i18n="loading-text">Аналіз структури архіву...</p>
-                    <p class="text-xs text-slate-400 mt-1" data-i18n="loading-subtext">Будь ласка, зачекайте кілька секунд.</p>
+                    <p class="text-xs text-slate-400 mt-1" data-i18n="loading-subtext">Пожалуйста, подождите несколько секунд.</p>
                 </div>
 
                 <!-- ПОКРОКОВИЙ МАЙСТЕР -->
@@ -314,11 +313,11 @@ enable-command-block=true</textarea>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
                                 <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
-                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый блок с mc-packs в поле «Шаг 2» и нажмите финальную кнопку.</p>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый блок с mc-packs in поле «Шаг 2» и нажмите финальную кнопку.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
                                 <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">4</div>
-                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-4-desc">Сайт сформирует легкий архив server_ready.zip для вашего хостингу!</p>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-4-desc">Сайт сформирует легкий архив server_ready.zip для вашего хостинга!</p>
                             </div>
                         </div>
                     </div>
@@ -364,7 +363,7 @@ enable-command-block=true</textarea>
 
     <!-- Логіка та безпечна ініціалізація (БЕЗ ЖОДНИХ КРИТИЧНИХ ПОМИЛОК) -->
     <script>
-        // Словник перекладів
+        // Словник перекладів (Без innerHTML конфліктів)
         const translations = {
             uk: {
                 "badge": "Auto-Packer Utility",
@@ -395,7 +394,7 @@ enable-command-block=true</textarea>
                 "step2-tag": "Крок 2",
                 "step2-title": "Вставити скопійований блок тексту",
                 "step2-desc": "Скопіюйте блок тексту з mc-packs.net та вставте його сюди повністю.",
-                "step2-placeholder": "Вставте сюди весь блок з mc-packs.net...\n\nПриклад:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...",
+                "step2-placeholder": "Вставте сюди весь блок з mc-packs.net...\n\nПриклад:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...\nresource-pack-id=f71e52...",
                 "btn-finish-wizard": "Скачати архів",
                 "btn-finish-simple": "Скачати архів",
                 "btn-cancel": "Скасувати",
@@ -545,7 +544,7 @@ spawn-protection=0
 enable-command-block=true`;
 
         // БЕЗПЕЧНА ІНІЦІАЛІЗАЦІЯ ВСІХ ПОДІЙ ПІСЛЯ ЗАВАНТАЖЕННЯ DOM
-        // Це усуває всі помилки в консолі і гарантує, що кнопки будуть повністю робочими!
+        // Це повністю виключає помилки в консолі і гарантує, що кнопки будуть робочими!
         window.addEventListener('DOMContentLoaded', () => {
             initLanguage();
 
@@ -753,7 +752,6 @@ enable-command-block=true`;
                 return line;
             });
 
-            // Додаємо відсутні поля
             for (const key in defaultData) {
                 if (!updatedKeys.has(key)) {
                     lines.push(`${key}=${defaultData[key]}`);
