@@ -92,7 +92,7 @@
                     <span class="flex items-center gap-1.5"><i class="fa-solid fa-gear text-emerald-400 animate-spin [animation-duration:8s]"></i> <span data-i18n="tag-auto">Автоматично</span></span>
                 </div>
 
-                <!-- Селектор Мови (В верхньому правому кутку) -->
+                <!-- Селектор Мови -->
                 <div class="relative inline-block text-left" id="lang-switcher-container">
                     <button onclick="toggleLangDropdown()" id="lang-btn" class="flex items-center gap-2 px-3.5 py-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-xl text-xs font-bold text-emerald-400 shadow-md shadow-emerald-950/40 hover:bg-emerald-500/10 transition-all duration-300">
                         <i class="fa-solid fa-language text-sm"></i>
@@ -261,8 +261,11 @@ enable-command-block=true</textarea>
                     </div>
 
                     <!-- ФІНАЛЬНА КНОПКА З МАЙСТРОМ -->
-                    <div class="flex justify-end pt-2">
-                        <button onclick="processAndRedirectWizard()" id="btn-submit-wizard" class="w-full md:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:pointer-events-none" disabled>
+                    <div class="flex flex-col sm:flex-row justify-end gap-3 pt-2">
+                        <button onclick="resetFiles()" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-900/60 hover:bg-red-500/10 hover:text-red-400 text-slate-400 font-semibold px-6 py-3.5 rounded-xl transition-all duration-300 border border-slate-800 hover:border-red-500/20 active:scale-95 text-xs md:text-sm">
+                            <span data-i18n="btn-cancel">Скасувати</span>
+                        </button>
+                        <button onclick="processAndRedirectWizard()" id="btn-submit-wizard" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:pointer-events-none" disabled>
                             <span class="btn-text">Скачати архів</span>
                             <i class="fa-solid fa-check"></i>
                         </button>
@@ -270,24 +273,13 @@ enable-command-block=true</textarea>
                 </div>
 
                 <!-- ПРОСТА ФІНАЛЬНА КНОПКА -->
-                <div id="simple-submit-box" class="hidden mt-6 flex justify-end">
-                    <button onclick="processAndRedirectSimple()" id="btn-submit-simple" class="w-full md:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95">
+                <div id="simple-submit-box" class="hidden mt-6 flex flex-col sm:flex-row justify-end gap-3">
+                    <button onclick="resetFiles()" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-900/60 hover:bg-red-500/10 hover:text-red-400 text-slate-400 font-semibold px-6 py-3.5 rounded-xl transition-all duration-300 border border-slate-800 hover:border-red-500/20 active:scale-95 text-xs md:text-sm">
+                        <span data-i18n="btn-cancel">Скасувати</span>
+                    </button>
+                    <button onclick="processAndRedirectSimple()" id="btn-submit-simple" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95">
                         <span class="btn-text">Згенерувати готовий архів</span>
                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                    </button>
-                </div>
-
-                <!-- Статус архіву -->
-                <div id="file-status-box" class="hidden mt-4 p-4 bg-emerald-950/20 border border-emerald-500/25 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-                        <div>
-                            <p class="text-sm font-semibold text-white" id="file-count-text">Архів завантажено</p>
-                            <p class="text-xs text-slate-400" id="file-details"></p>
-                        </div>
-                    </div>
-                    <button onclick="resetFiles()" class="text-slate-500 hover:text-red-400 text-xs transition-colors" data-i18n="btn-cancel">
-                        Скасувати
                     </button>
                 </div>
             </div>
@@ -315,7 +307,7 @@ enable-command-block=true</textarea>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
                                 <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
-                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый блок с mc-packs in поле «Шаг 2» и нажмите финальную кнопку.</p>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый block с mc-packs in поле «Шаг 2» и нажмите финальную кнопку.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
                                 <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">4</div>
@@ -855,7 +847,6 @@ enable-command-block=true`;
         }
 
         // Парсинг блоку з mc-packs для отримання об'єкта параметрів
-        // Оновлення: SHA-1 більше не прораховується наперед, бо користувач копіює його з mc-packs!
         function parseMcPacksBlock(pastedText) {
             const trimmedInput = pastedText.trim();
             if (!trimmedInput) return null;
@@ -1090,33 +1081,39 @@ enable-command-block=true`;
                 const simpleSubmitBtn = document.getElementById('btn-submit-simple');
 
                 if (resourcesZipEntry) {
-                    detectedResourcePackBlob = await resourcesZipEntry.async("blob");
-                    detectedResourcePackName = resourcesZipEntry.name.split('/').pop();
-                    
-                    const lang = getActiveLang();
-                    const titleText = lang === "uk" 
-                        ? `Виявлено вбудований ресурспак: "${detectedResourcePackName}"` 
-                        : (lang === "ru" ? `Обнаружен встроенный ресурспак: "${detectedResourcePackName}"` : `Detected built-in resource pack: "${detectedResourcePackName}"`);
-                    if (rpTitle) rpTitle.innerText = titleText;
+                    try {
+                        detectedResourcePackBlob = await resourcesZipEntry.async("blob");
+                        detectedResourcePackName = resourcesZipEntry.name.split('/').pop();
+                        
+                        const lang = getActiveLang();
+                        const titleText = lang === "uk" 
+                            ? `Виявлено вбудований ресурспак: "${detectedResourcePackName}"` 
+                            : (lang === "ru" ? `Обнаружен встроенный ресурспак: "${detectedResourcePackName}"` : `Detected built-in resource pack: "${detectedResourcePackName}"`);
+                        if (rpTitle) rpTitle.innerText = titleText;
 
-                    // Оновлення: SHA-1 більше не прораховується заздалегідь
-                    updateConfigWithResourcePack("", "");
+                        updateConfigWithResourcePack("", "");
 
-                    if (wizardBox) wizardBox.classList.remove('hidden');
-                    if (simpleBox) simpleBox.classList.add('hidden');
+                        if (wizardBox) wizardBox.classList.remove('hidden');
+                        if (simpleBox) simpleBox.classList.add('hidden');
 
-                    if (step2Box) {
-                        step2Box.classList.add('opacity-40', 'pointer-events-none');
-                    }
-                    if (wizardSubmitBtn) wizardSubmitBtn.disabled = true;
-                    if (rpUrlInput) rpUrlInput.value = "";
-                    stepOneCompleted = false;
+                        if (step2Box) {
+                            step2Box.classList.add('opacity-40', 'pointer-events-none');
+                        }
+                        if (wizardSubmitBtn) wizardSubmitBtn.disabled = true;
+                        if (rpUrlInput) rpUrlInput.value = "";
+                        stepOneCompleted = false;
 
-                    if (step1Btn) {
-                        step1Btn.className = "w-full md:w-auto flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-3 rounded-xl transition-all";
-                    }
-                    if (step1BtnText) {
-                        step1BtnText.innerText = lang === "uk" ? "Скачати та відкрити mc-packs.net" : (lang === "ru" ? "Скачать и открыть mc-packs.net" : "Download and open mc-packs.net");
+                        if (step1Btn) {
+                            step1Btn.className = "w-full md:w-auto flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-3 rounded-xl transition-all";
+                        }
+                        if (step1BtnText) {
+                            step1BtnText.innerText = lang === "uk" ? "Скачати та відкрити mc-packs.net" : (lang === "ru" ? "Скачать и открыть mc-packs.net" : "Download and open mc-packs.net");
+                        }
+                    } catch (readErr) {
+                        console.error("Помилка зчитування ресурспаку: ", readErr);
+                        alert("Помилка зчитування структури архіву (ресурспаку): " + readErr.message);
+                        resetFiles();
+                        return;
                     }
                 } else {
                     detectedResourcePackBlob = null;
@@ -1141,8 +1138,8 @@ enable-command-block=true`;
                 updateButtonText();
 
             }).catch(function(err) {
-                console.error(err);
-                alert("Помилка під час зчитування структури архіву.");
+                console.error("Помилка при відкритті ZIP: ", err);
+                alert("Помилка під час зчитування структури архіву: " + err.message);
                 resetFiles();
             });
         }
@@ -1279,11 +1276,15 @@ enable-command-block=true`;
                     if (enableRedirect && customHostUrl) {
                         window.open(customHostUrl, "minecraft_host_panel");
                     }
+                }).catch(function(zipErr) {
+                    console.error("Помилка генерації ZIP: ", zipErr);
+                    alert("Помилка під час створення архіву сервера: " + zipErr.message);
+                    resetFiles();
                 });
 
             }).catch(function(err) {
-                console.error(err);
-                alert("Помилка під час зчитування або перепакування архіву. Спробуйте інший файл.");
+                console.error("Помилка реструктуризації: ", err);
+                alert("Помилка під час зчитування або перепакування архіву: " + err.message);
                 resetFiles();
             });
         }
