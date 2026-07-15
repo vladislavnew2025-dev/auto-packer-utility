@@ -9,11 +9,10 @@
     <meta name="description" content="Найпростіший спосіб завантажити карту на Minecraft сервер за 1 хвилину без багів! Автоматичне перейменування у world, конфігурація server.properties та авто-ресурспак.">
     <meta name="keywords" content="minecraft, сервер, завантажити карту, как загрузить карту на сервер, server.properties, mc-packs, ресурспак, auto-packer">
     <meta name="author" content="Auto-Packer Utility">
-
-    <!-- Іконка сайту (Favicon) для відображення в Google та на вкладці -->
-    <link rel="icon" type="image/png" href="./favicon.png?v=2">
-    <link rel="shortcut icon" type="image/png" href="./favicon.png?v=2">
     
+    <!-- Іконка сайту (Favicon) для відображення в Google та на вкладці -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/minecraft-logo.png">
+
     <!-- Підключення Tailwind CSS для стилів -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Безпечне підключення бібліотеки JSZip з криптографічним захистом цілісності (SRI) -->
@@ -291,7 +290,7 @@ enable-command-block=true</textarea>
                 </div>
             </div>
 
-            <!-- Вкладка 3: Як це працює та Disqus Відгуки (З дизайну макету) -->
+            <!-- Вкладка 3: Як це працює та Disqus Відгуки -->
             <div id="tab-instructions" class="tab-content hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 leading-relaxed">
                     
@@ -313,12 +312,12 @@ enable-command-block=true</textarea>
                                 <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold font-medium" data-i18n="step-2-desc">Нажмите «Шаг 1», скачайте ресурспак и забросьте его на mc-packs.net.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
-                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
                                 <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый блок с mc-packs in поле «Шаг 2» и нажмите финальную кнопку.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
                                 <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">4</div>
-                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-4-desc">Сайт сформирует легкий архив server_ready.zip для вашего хостинга!</p>
+                                <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-4-desc">Сайт сформирует легкий архив server_ready.zip для вашего хостингу!</p>
                             </div>
                         </div>
                     </div>
@@ -427,7 +426,7 @@ enable-command-block=true</textarea>
                 "btn-reset": "Сбросить",
                 "btn-copy": "Копировать",
                 "upload-title": "Настройка архива карты и ресурспака",
-                "upload-desc": "Перетащите сюда оригинальный ZIP-файл карты, скачанный из интернета.",
+                "upload-desc": "Перетащите сюда оригинальный ZIP-файл карты, скачанную из интернета.",
                 "host-settings-title": "Настройка перенаправления",
                 "host-redirect-label": "Открывать панель хостинга после упаковки",
                 "host-placeholder": "Вставьте ссылку на ваш file-менеджер хостинга (например, MagmaNode, Aternos)...",
@@ -461,6 +460,54 @@ enable-command-block=true</textarea>
                 "help-feedback-title": "💬 Отзывы и предложения",
                 "help-feedback-desc": "Нашли баг или есть идея по улучшению? Напишите нам!",
                 "rp-external-tip": "💡 <b>Совет:</b> Если вы скачали ресурспак отдельно с сайта карты, приоритетно загружайте на mc-packs.net именно его, а не извлеченную нами версию. Спасибо за внимание!"
+            },
+            en: {
+                "badge": "Auto-Packer Utility",
+                "main-title": "Auto-Packer Utility",
+                "main-desc": "The easiest way to upload any custom map to your Minecraft server in 1 minute! Just drag and drop the archive - the site will automatically prepare the world without bugs and help you link the resource pack.",
+                "menu-prop": "server.properties",
+                "menu-edit": "Edit Archive",
+                "menu-help": "How it works?",
+                "prop-title": "Configure server.properties",
+                "prop-desc": "You can edit this configuration file before downloading your archive.",
+                "btn-edit": "Edit",
+                "btn-reset": "Reset",
+                "btn-copy": "Copy",
+                "upload-title": "Configure Map Archive and Resource Pack",
+                "upload-desc": "Drag and drop the original world ZIP file downloaded from the internet here.",
+                "host-settings-title": "Redirection Settings",
+                "host-redirect-label": "Open hosting panel after packing",
+                "host-placeholder": "Paste the link to your hosting file manager (e.g., MagmaNode, Aternos)...",
+                "drop-title": "Drag & Drop Map File (.zip)",
+                "drop-subtitle": "or click below to select it from your device",
+                "btn-select-file": "Select ZIP Archive",
+                "loading-text": "Analyzing archive structure...",
+                "loading-subtext": "Please wait a few seconds.",
+                "step1-tag": "Step 1",
+                "step1-title": "Download Resource Pack Separately",
+                "step1-desc": "Get the resource pack file on your computer and upload it to mc-packs.net.",
+                "step1-btn": "Download and open mc-packs.net",
+                "step2-tag": "Step 2",
+                "step2-title": "Paste Copied Text Block",
+                "step2-desc": "Copy the text block from mc-packs.net and paste it here completely.",
+                "step2-placeholder": "Paste the entire block from mc-packs.net here...\n\nExample:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...",
+                "btn-finish-wizard": "Download Archive",
+                "btn-finish-simple": "Download Archive",
+                "btn-cancel": "Cancel",
+                "help-title": "How to run a map with a resource pack?",
+                "help-steps-title": "Step-by-step setup guide:",
+                "step-1-desc": "Drag & Drop the map ZIP archive into the 'Edit Archive' tab.",
+                "step-2-desc": "Click 'Step 1', download the resource pack and upload it to mc-packs.net.",
+                "step-3-desc": "Paste the copied block from mc-packs into the 'Step 2' field and click the final button.",
+                "step-4-desc": "The site will generate a clean server_ready.zip archive for your hosting!",
+                "editor-status-view": "server.properties (read-only)",
+                "tag-fast": "Fast",
+                "tag-easy": "Easy",
+                "tag-auto": "Automatic",
+                "footer-text": "Made for fast server file preparation.",
+                "help-feedback-title": "💬 Feedback & Suggestions",
+                "help-feedback-desc": "Found a bug or have an idea for improvement? Let us know!",
+                "rp-external-tip": "💡 <b>Tip:</b> If you downloaded the resource pack separately from the map site, it is highly recommended to upload that version to mc-packs.net instead of the one extracted by our tool. Thank you for your attention!"
             }
         };
 
@@ -474,8 +521,10 @@ enable-command-block=true</textarea>
 
         // Отримання поточної мови користувача
         function getActiveLang() {
-            const userLang = (navigator.language || navigator.userLanguage || "uk").toLowerCase();
-            return userLang.startsWith("uk") ? "uk" : "ru";
+            const userLang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
+            if (userLang.startsWith("uk")) return "uk";
+            if (userLang.startsWith("ru") || userLang.startsWith("be") || userLang.startsWith("kk")) return "ru";
+            return "en"; // За замовчуванням англійська для всього іншого світу!
         }
 
         // Динамічне оновлення тексту кнопки відповідно до мови та налаштувань перенаправлення
@@ -490,9 +539,13 @@ enable-command-block=true</textarea>
 
             let label = "";
             if (enableRedirect && customHostUrl) {
-                label = lang === "uk" ? "Скачати архів та відкрити хостинг" : "Скачать архив и открыть хостинг";
+                if (lang === "uk") label = "Скачати архів та відкрити хостинг";
+                else if (lang === "ru") label = "Скачать архив и открыть хостинг";
+                else label = "Download Archive & Open Hosting";
             } else {
-                label = lang === "uk" ? "Скачати архів" : "Скачать архив";
+                if (lang === "uk") label = "Скачати архів";
+                else if (lang === "ru") label = "Скачать архив";
+                else label = "Download Archive";
             }
 
             const btnWizard = document.getElementById('btn-submit-wizard');
@@ -648,6 +701,7 @@ enable-command-block=true`;
             }
         }
 
+        // Безпечний перехід між вкладками
         function switchTab(tabId) {
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.add('hidden'));
@@ -686,13 +740,13 @@ enable-command-block=true`;
                 editBtn.classList.remove('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
                 editBtn.classList.add('bg-emerald-500', 'text-slate-950');
                 
-                editText.innerText = lang === "uk" ? "Зберегти" : "Сохранить";
+                editText.innerText = lang === "uk" ? "Зберегти" : (lang === "ru" ? "Сохранить" : "Save");
                 editText.removeAttribute('data-i18n');
 
                 editIcon.className = "fa-solid fa-floppy-disk";
                 
                 codeContainer.classList.add('edit-mode-active');
-                editorStatus.innerText = lang === "uk" ? "server.properties (Редагування...)" : "server.properties (Редактирование...)";
+                editorStatus.innerText = lang === "uk" ? "server.properties (Редагування...)" : (lang === "ru" ? "server.properties (Редактирование...)" : "server.properties (Editing...)");
                 editorStatus.removeAttribute('data-i18n');
                 editorStatus.classList.add('text-emerald-400');
             } else {
@@ -702,18 +756,18 @@ enable-command-block=true`;
                 editBtn.classList.add('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
                 editBtn.classList.remove('bg-emerald-500', 'text-slate-950');
                 
-                editText.innerText = lang === "uk" ? "Редагувати" : "Редактировать";
+                editText.innerText = lang === "uk" ? "Редагувати" : (lang === "ru" ? "Редактировать" : "Edit");
                 editText.setAttribute('data-i18n', 'btn-edit');
 
                 editIcon.className = "fa-solid fa-pen-to-square";
                 
                 codeContainer.classList.remove('edit-mode-active');
-                editorStatus.innerText = lang === "uk" ? "server.properties (Збережено)" : "server.properties (Сохранено)";
+                editorStatus.innerText = lang === "uk" ? "server.properties (Збережено)" : (lang === "ru" ? "server.properties (Сохранено)" : "server.properties (Saved)");
                 editorStatus.classList.remove('text-emerald-400');
 
                 setTimeout(() => {
                     if(!isEditing) {
-                        editorStatus.innerText = lang === "uk" ? "server.properties (лише перегляд)" : "server.properties (только просмотр)";
+                        editorStatus.innerText = lang === "uk" ? "server.properties (лише перегляд)" : (lang === "ru" ? "server.properties (только просмотр)" : "server.properties (read-only)");
                         editorStatus.setAttribute('data-i18n', 'editor-status-view');
                     }
                 }, 2000);
@@ -853,11 +907,11 @@ enable-command-block=true`;
                 resetBtn.classList.remove('text-slate-400', 'border-slate-800');
                 resetBtn.classList.add('text-emerald-400', 'border-emerald-500/20');
             }
-            if (resetText) resetText.innerText = lang === "uk" ? "Скинуто!" : "Сброшено!";
+            if (resetText) resetText.innerText = lang === "uk" ? "Скинуто!" : (lang === "ru" ? "Сброшено!" : "Reset!");
             if (resetIcon) resetIcon.className = "fa-solid fa-check";
 
             if (editorStatus) {
-                editorStatus.innerText = lang === "uk" ? "server.properties (скинуто до стандартних)" : "server.properties (сброшено до стандартных)";
+                editorStatus.innerText = lang === "uk" ? "server.properties (скинуто до стандартних)" : (lang === "ru" ? "server.properties (сброшено до стандартных)" : "server.properties (reset to default)");
                 editorStatus.classList.add('text-emerald-400');
                 editorStatus.removeAttribute('data-i18n');
             }
@@ -867,16 +921,16 @@ enable-command-block=true`;
                     resetBtn.classList.add('text-slate-400', 'border-slate-800');
                     resetBtn.classList.remove('text-emerald-400', 'border-emerald-500/20');
                 }
-                if (resetText) resetText.innerText = lang === "uk" ? "Скинути" : "Сбросить";
+                if (resetText) resetText.innerText = lang === "uk" ? "Скинути" : (lang === "ru" ? "Сбросить" : "Reset");
                 if (resetIcon) resetIcon.className = "fa-solid fa-rotate-left";
                 
                 if (editorStatus) {
                     if (!isEditing) {
-                        editorStatus.innerText = lang === "uk" ? "server.properties (лише перегляд)" : "server.properties (только просмотр)";
+                        editorStatus.innerText = lang === "uk" ? "server.properties (лише перегляд)" : (lang === "ru" ? "server.properties (только просмотр)" : "server.properties (read-only)");
                         editorStatus.setAttribute('data-i18n', 'editor-status-view');
                         editorStatus.classList.remove('text-emerald-400');
                     } else {
-                        editorStatus.innerText = lang === "uk" ? "server.properties (Редагування...)" : "server.properties (Редактирование...)";
+                        editorStatus.innerText = lang === "uk" ? "server.properties (Редагування...)" : (lang === "ru" ? "server.properties (Редактирование...)" : "server.properties (Editing...)");
                     }
                 }
             }, 1500);
@@ -893,14 +947,20 @@ enable-command-block=true`;
                     copyBtn.classList.remove('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
                     copyBtn.classList.add('bg-emerald-500', 'text-slate-950');
                 }
-                if (copyTextSpan) copyTextSpan.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Скопійовано!';
+                if (copyTextSpan) {
+                    const lang = getActiveLang();
+                    copyTextSpan.innerHTML = lang === "uk" ? '<i class="fa-solid fa-check mr-1"></i> Скопійовано!' : (lang === "ru" ? '<i class="fa-solid fa-check mr-1"></i> Скопировано!' : '<i class="fa-solid fa-check mr-1"></i> Copied!');
+                }
 
                 setTimeout(() => {
                     if (copyBtn) {
                         copyBtn.classList.add('bg-slate-800', 'text-emerald-400', 'border-emerald-500/20');
                         copyBtn.classList.remove('bg-emerald-500', 'text-slate-950');
                     }
-                    if (copyTextSpan) copyTextSpan.innerHTML = 'Скопіювати';
+                    if (copyTextSpan) {
+                        const lang = getActiveLang();
+                        copyTextSpan.innerHTML = lang === "uk" ? 'Скопіювати' : (lang === "ru" ? 'Копировать' : 'Copy');
+                    }
                 }, 2000);
             });
         }
@@ -997,7 +1057,7 @@ enable-command-block=true`;
                     const lang = getActiveLang();
                     const titleText = lang === "uk" 
                         ? `Виявлено вбудований ресурспак: "${detectedResourcePackName}"` 
-                        : `Обнаружен встроенный ресурспак: "${detectedResourcePackName}"`;
+                        : (lang === "ru" ? `Обнаружен встроенный ресурспак: "${detectedResourcePackName}"` : `Detected built-in resource pack: "${detectedResourcePackName}"`);
                     if (rpTitle) rpTitle.innerText = titleText;
 
                     updateConfigWithResourcePack("", "");
@@ -1016,7 +1076,7 @@ enable-command-block=true`;
                         step1Btn.className = "w-full md:w-auto flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-3 rounded-xl transition-all";
                     }
                     if (step1BtnText) {
-                        step1BtnText.innerText = lang === "uk" ? "Скачати та відкрити mc-packs.net" : "Скачать и открыть mc-packs.net";
+                        step1BtnText.innerText = lang === "uk" ? "Скачати та відкрити mc-packs.net" : (lang === "ru" ? "Скачать и открыть mc-packs.net" : "Download and open mc-packs.net");
                     }
                 } else {
                     detectedResourcePackBlob = null;
@@ -1027,12 +1087,12 @@ enable-command-block=true`;
 
                 if (loadingBox) loadingBox.classList.add('hidden');
                 if (fileStatusBox) fileStatusBox.classList.remove('hidden');
-                if (fileCountText) fileCountText.innerText = `Архів завантажено: "${file.name}"`;
+                if (fileCountText) fileCountText.innerText = lang === "uk" ? `Архів завантажено: "${file.name}"` : (lang === "ru" ? `Архив загружен: "${file.name}"` : `Archive loaded: "${file.name}"`);
                 
                 if (fileDetails) {
-                    let fileDetailsText = `Розмір: ${(file.size / 1024 / 1024).toFixed(2)} МБ`;
+                    let fileDetailsText = lang === "uk" ? `Розмір: ${(file.size / 1024 / 1024).toFixed(2)} МБ` : (lang === "ru" ? `Размер: ${(file.size / 1024 / 1024).toFixed(2)} МБ` : `Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
                     if (resourcesZipEntry) {
-                        fileDetailsText += ` (Виявлено ресурспак: ${detectedResourcePackName})`;
+                        fileDetailsText += lang === "uk" ? ` (Виявлено ресурспак: ${detectedResourcePackName})` : (lang === "ru" ? ` (Обнаружен ресурспак: ${detectedResourcePackName})` : ` (Detected resource pack: ${detectedResourcePackName})`);
                     }
                     fileDetails.innerText = fileDetailsText;
                 }
@@ -1067,7 +1127,7 @@ enable-command-block=true`;
             const btn1Text = document.getElementById('btn-step-1-text');
             const lang = getActiveLang();
             if (btn1Text) {
-                btn1Text.innerText = lang === "uk" ? "Скачано! Закиньте його на mc-packs" : "Скачано! Забросьте на mc-packs";
+                btn1Text.innerText = lang === "uk" ? "Скачано! Закиньте його на mc-packs" : (lang === "ru" ? "Скачано! Забросьте на mc-packs" : "Downloaded! Upload to mc-packs");
             }
 
             const step2Box = document.getElementById('wizard-step-2');
