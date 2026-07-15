@@ -7,11 +7,12 @@
     
     <!-- Пошукова оптимізація (SEO) для Google -->
     <meta name="description" content="Найпростіший спосіб завантажити карту на Minecraft сервер за 1 хвилину без багів! Автоматичне перейменування у world, конфігурація server.properties та авто-ресурспак.">
-    <meta name="keywords" content="minecraft, сервер, завантажити карту, как загрузить карту на сервер, server.properties, mc-packs, ресурспак, auto-packer">
+    <meta name="keywords" content="minecraft, сервер, завантажити карту, как загрузить карту на server, server.properties, mc-packs, ресурспак, auto-packer">
     <meta name="author" content="Auto-Packer Utility">
     
-    <!-- Іконка сайту (Favicon) для відображення в Google та на вкладці -->
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/minecraft-logo.png">
+    <!-- Твоя правильна іконка сайту (Favicon) з кеш-бустингом ?v=2 -->
+    <link rel="icon" type="image/png" href="./favicon.png?v=2">
+    <link rel="shortcut icon" type="image/png" href="./favicon.png?v=2">
 
     <!-- Підключення Tailwind CSS для стилів -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -62,49 +63,50 @@
     <div class="max-w-5xl w-full mx-auto px-4 py-12">
         
         <!-- Шапка сайту з елементами з твого рендеру -->
-        <header class="flex flex-col items-center text-center mb-12">
+        <header class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
             <!-- Блок з анімованим логотипом -->
-            <div class="relative w-24 h-20 flex items-center justify-center shrink-0 mb-4">
-                <!-- Анімоване неонове перехрестя з фото -->
-                <div class="absolute inset-0 border-2 border-dashed border-emerald-500/30 rounded-full animate-spin [animation-duration:15s] pointer-events-none"></div>
-                <div class="absolute inset-2 border border-emerald-400/40 rounded-full animate-pulse pointer-events-none"></div>
-                <!-- Іконка блоку у центрі -->
-                <i class="fa-solid fa-cubes text-3xl text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] z-10"></i>
+            <div class="flex items-center gap-5 text-center md:text-left">
+                <div class="relative w-20 h-20 flex items-center justify-center shrink-0">
+                    <div class="absolute inset-0 border-2 border-dashed border-emerald-500/30 rounded-full animate-spin [animation-duration:15s] pointer-events-none"></div>
+                    <div class="absolute inset-2 border border-emerald-400/40 rounded-full animate-pulse pointer-events-none"></div>
+                    <i class="fa-solid fa-cubes text-3xl text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] z-10"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-none">
+                        Auto-Packer <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">Utility</span>
+                    </h1>
+                    <p class="text-slate-400 text-xs md:text-sm mt-3 max-w-lg leading-relaxed font-semibold" data-i18n="main-desc">
+                        Найпростіший спосіб завантажити будь-яку карту на ваш Minecraft сервер за 1 хвилину! Просто закиньте архів — сайт сам підготує світ без помилок та допоможе підключити ресурспак.
+                    </p>
+                </div>
             </div>
-            
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-none">
-                Auto-Packer <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">Utility</span>
-            </h1>
-            
-            <!-- Простий опис для новачків -->
-            <p class="text-slate-400 text-xs md:text-sm mt-4 max-w-lg leading-relaxed font-semibold" data-i18n="main-desc">
-                Найпростіший спосіб завантажити будь-яку карту на ваш Minecraft сервер за 1 хвилину! Просто закиньте архів — сайт сам підготує світ без помилок та допоможе підключити ресурспак.
-            </p>
-        </header>
 
-        <!-- Неонові Pills-теги з твого зображення (Розміщено по центру під описом) -->
-        <div class="flex flex-wrap justify-center gap-6 text-xs md:text-sm font-bold text-white mb-10">
-            <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-950/40">
-                    <i class="fa-solid fa-bolt text-[10px]"></i>
-                </span>
-                <span data-i18n="tag-fast">Швидко</span>
+            <!-- Права частина шапки: Pills-теги та Селектор Мови -->
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <!-- Неонові Pills-теги -->
+                <div class="flex items-center gap-4 px-5 py-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-full text-xs font-bold text-emerald-400 shadow-md shadow-emerald-950/40">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-emerald-400"></i> <span data-i18n="tag-fast">Швидко</span></span>
+                    <span class="text-emerald-500/30 font-light">•</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-leaf text-emerald-400"></i> <span data-i18n="tag-easy">Легко</span></span>
+                    <span class="text-emerald-500/30 font-light">•</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-gear text-emerald-400 animate-spin [animation-duration:8s]"></i> <span data-i18n="tag-auto">Автоматично</span></span>
+                </div>
+
+                <!-- Селектор Мови (В верхньому правому кутку) -->
+                <div class="relative inline-block text-left" id="lang-switcher-container">
+                    <button onclick="toggleLangDropdown()" id="lang-btn" class="flex items-center gap-2 px-3.5 py-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-xl text-xs font-bold text-emerald-400 shadow-md shadow-emerald-950/40 hover:bg-emerald-500/10 transition-all duration-300">
+                        <i class="fa-solid fa-language text-sm"></i>
+                        <span id="current-lang-text">UA</span>
+                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-28 rounded-xl bg-slate-950 border border-slate-800 shadow-2xl z-50 overflow-hidden">
+                        <button onclick="setLanguage('uk')" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-300 hover:bg-emerald-500 hover:text-slate-950 transition-colors flex items-center gap-2">🇺🇦 UA</button>
+                        <button onclick="setLanguage('en')" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-300 hover:bg-emerald-500 hover:text-slate-950 transition-colors flex items-center gap-2">🇺🇸 EN</button>
+                        <button onclick="setLanguage('ru')" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-300 hover:bg-emerald-500 hover:text-slate-950 transition-colors flex items-center gap-2">🇷🇺 RU</button>
+                    </div>
+                </div>
             </div>
-            <span class="text-emerald-500/30 self-center hidden md:inline">•</span>
-            <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-950/40">
-                    <i class="fa-solid fa-leaf text-[10px]"></i>
-                </span>
-                <span data-i18n="tag-easy">Легко</span>
-            </div>
-            <span class="text-emerald-500/30 self-center hidden md:inline">•</span>
-            <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-950/40">
-                    <i class="fa-solid fa-gear text-[10px]"></i>
-                </span>
-                <span data-i18n="tag-auto">Автоматично</span>
-            </div>
-        </div>
+        </header>
 
         <!-- Меню перемикання (3 менюшки) -->
         <div class="bg-slate-950/60 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800/80 flex flex-wrap gap-1 mb-8">
@@ -290,7 +292,7 @@ enable-command-block=true</textarea>
                 </div>
             </div>
 
-            <!-- Вкладка 3: Як це працює та Disqus Відгуки -->
+            <!-- Вкладка 3: Як це працює та Disqus Відгуки (З дизайну макету) -->
             <div id="tab-instructions" class="tab-content hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 leading-relaxed">
                     
@@ -426,7 +428,7 @@ enable-command-block=true</textarea>
                 "btn-reset": "Сбросить",
                 "btn-copy": "Копировать",
                 "upload-title": "Настройка архива карты и ресурспака",
-                "upload-desc": "Перетащите сюда оригинальный ZIP-файл карты, скачанную из интернета.",
+                "upload-desc": "Перетащите сюда оригинальный ZIP-файл карты, скачанный из интернета.",
                 "host-settings-title": "Настройка перенаправления",
                 "host-redirect-label": "Открывать панель хостинга после упаковки",
                 "host-placeholder": "Вставьте ссылку на ваш file-менеджер хостинга (например, MagmaNode, Aternos)...",
@@ -521,6 +523,9 @@ enable-command-block=true</textarea>
 
         // Отримання поточної мови користувача
         function getActiveLang() {
+            const savedLang = safeGetStorage('preferred_language');
+            if (savedLang) return savedLang;
+
             const userLang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
             if (userLang.startsWith("uk")) return "uk";
             if (userLang.startsWith("ru") || userLang.startsWith("be") || userLang.startsWith("kk")) return "ru";
@@ -561,18 +566,42 @@ enable-command-block=true</textarea>
             }
         }
 
+        // Керування показом випадаючого меню мов
+        function toggleLangDropdown() {
+            const dropdown = document.getElementById('lang-dropdown');
+            if (dropdown) dropdown.classList.toggle('hidden');
+        }
+
+        // Встановлення мови користувачем вручну
+        function setLanguage(lang) {
+            safeSetStorage('preferred_language', lang);
+            initLanguage();
+            const dropdown = document.getElementById('lang-dropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+        }
+
         // Визначення мови браузера
         function initLanguage() {
             const lang = getActiveLang();
             
+            // Оновлюємо текст у кнопці селектора
+            const currentLangText = document.getElementById('current-lang-text');
+            if (currentLangText) {
+                currentLangText.innerText = lang.toUpperCase();
+            }
+
             document.querySelectorAll("[data-i18n]").forEach(el => {
                 const key = el.getAttribute("data-i18n");
-                if (translations[lang][key]) el.innerText = translations[lang][key];
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
             });
 
             document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
                 const key = el.getAttribute("data-i18n-placeholder");
-                if (translations[lang][key]) el.placeholder = translations[lang][key];
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
             });
 
             updateButtonText();
@@ -646,6 +675,15 @@ enable-command-block=true`;
                     if (e.target.files.length > 0) handleZipFile(e.target.files[0]);
                 });
             }
+
+            // Закриття випадаючого меню мов при кліку поза ним
+            window.addEventListener('click', function(e) {
+                const btn = document.getElementById('lang-btn');
+                const dropdown = document.getElementById('lang-dropdown');
+                if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
 
             // Безпечне підключення Disqus коментарів
             const disqusThread = document.getElementById('disqus_thread');
