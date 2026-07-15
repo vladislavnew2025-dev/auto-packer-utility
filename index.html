@@ -7,7 +7,7 @@
     
     <!-- Пошукова оптимізація (SEO) для Google -->
     <meta name="description" content="Найпростіший спосіб завантажити карту на Minecraft сервер за 1 хвилину без багів! Автоматичне перейменування у world, конфігурація server.properties та авто-ресурспак.">
-    <meta name="keywords" content="minecraft, сервер, завантажити карту, как загрузить карту на server, server.properties, mc-packs, ресурспак, auto-packer">
+    <meta name="keywords" content="minecraft, сервер, завантажити карту, как загрузить карту на сервер, server.properties, mc-packs, ресурспак, auto-packer">
     <meta name="author" content="Auto-Packer Utility">
     
     <!-- Твоя правильна іконка сайту (Favicon) з кеш-бустингом ?v=2 -->
@@ -64,7 +64,7 @@
         
         <!-- Шапка сайту з елементами з твого рендеру -->
         <header class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
-            <!-- Блок з анімованим логотипом -->
+            <!-- Блок з логотипом та прицілом ліворуч -->
             <div class="flex items-center gap-5 text-center md:text-left">
                 <div class="relative w-20 h-20 flex items-center justify-center shrink-0">
                     <div class="absolute inset-0 border-2 border-dashed border-emerald-500/30 rounded-full animate-spin [animation-duration:15s] pointer-events-none"></div>
@@ -83,7 +83,7 @@
 
             <!-- Права частина шапки: Pills-теги та Селектор Мови -->
             <div class="flex flex-col sm:flex-row items-center gap-4">
-                <!-- Неонові Pills-теги -->
+                <!-- Неонові Pills-теги у стилі макету -->
                 <div class="flex items-center gap-4 px-5 py-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-full text-xs font-bold text-emerald-400 shadow-md shadow-emerald-950/40">
                     <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-emerald-400"></i> <span data-i18n="tag-fast">Швидко</span></span>
                     <span class="text-emerald-500/30 font-light">•</span>
@@ -410,7 +410,7 @@ enable-command-block=true</textarea>
                 "tag-fast": "Швидко",
                 "tag-easy": "Легко",
                 "tag-auto": "Автоматично",
-                "footer-text": "Сделано для быстрой подготовки файлов сервера.",
+                "footer-text": "Зроблено для швидкої підготовки файлів сервера.",
                 "help-feedback-title": "💬 Відгуки та пропозиції",
                 "help-feedback-desc": "Знайшли баг або маєте ідею щодо покращення? Напишіть нам!",
                 "rp-external-tip": "💡 <b>Порада:</b> Якщо ви завантажили ресурспак окремо з сайту карти, пріоритетно завантажуйте на mc-packs.net саме його, а не витягнуту нами версію. Дякуємо за увагу!"
@@ -855,6 +855,7 @@ enable-command-block=true`;
         }
 
         // Парсинг блоку з mc-packs для отримання об'єкта параметрів
+        // Оновлення: SHA-1 більше не прораховується наперед, бо користувач копіює його з mc-packs!
         function parseMcPacksBlock(pastedText) {
             const trimmedInput = pastedText.trim();
             if (!trimmedInput) return null;
@@ -1098,6 +1099,7 @@ enable-command-block=true`;
                         : (lang === "ru" ? `Обнаружен встроенный ресурспак: "${detectedResourcePackName}"` : `Detected built-in resource pack: "${detectedResourcePackName}"`);
                     if (rpTitle) rpTitle.innerText = titleText;
 
+                    // Оновлення: SHA-1 більше не прораховується заздалегідь
                     updateConfigWithResourcePack("", "");
 
                     if (wizardBox) wizardBox.classList.remove('hidden');
@@ -1265,9 +1267,8 @@ enable-command-block=true`;
                     downloadLink.click();
                     document.body.removeChild(downloadLink);
 
-                    if (submitBtnWizard) submitBtnWizard.innerHTML = '<i class="fa-solid fa-check"></i> Оброблено!';
-                    if (loadingBox) loadingBox.classList.add('hidden');
-                    if (statusBox) statusBox.classList.remove('hidden');
+                    // Оновлення: миттєве скидання стану інтерфейсу до початкового після початку скачування
+                    resetFiles();
 
                     const enableRedirectEl = document.getElementById('enable-redirect');
                     const customHostUrlEl = document.getElementById('custom-host-url');
@@ -1276,14 +1277,7 @@ enable-command-block=true`;
                     const customHostUrl = customHostUrlEl ? customHostUrlEl.value.trim() : "";
 
                     if (enableRedirect && customHostUrl) {
-                        setTimeout(() => {
-                            window.open(customHostUrl, "minecraft_host_panel");
-                            resetFiles();
-                        }, 1200);
-                    } else {
-                        setTimeout(() => {
-                            resetFiles();
-                        }, 1200);
+                        window.open(customHostUrl, "minecraft_host_panel");
                     }
                 });
 
