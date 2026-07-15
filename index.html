@@ -220,7 +220,7 @@ enable-command-block=true</textarea>
                 <!-- Спінер завантаження -->
                 <div id="loading-box" class="hidden mt-4 p-6 bg-slate-950/50 border border-slate-800 rounded-xl text-center">
                     <i class="fa-solid fa-circle-notch animate-spin text-3xl text-emerald-500 mb-3 animate-infinite"></i>
-                    <p id="loading-box-text" class="text-sm font-semibold text-white animate-pulse" data-i18n="loading-text">Аналіз структури архіву...</p>
+                    <p id="loading-box-text" class="text-sm font-semibold text-white animate-pulse">Аналіз структури архіву...</p>
                     <p class="text-xs text-slate-400 mt-1" data-i18n="loading-subtext">Пожалуйста, подождите несколько секунд.</p>
                 </div>
 
@@ -277,9 +277,34 @@ enable-command-block=true</textarea>
                     <button onclick="resetFiles()" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-900/60 hover:bg-red-500/10 hover:text-red-400 text-slate-400 font-semibold px-6 py-3.5 rounded-xl transition-all duration-300 border border-slate-800 hover:border-red-500/20 active:scale-95 text-xs md:text-sm">
                         <span data-i18n="btn-cancel">Скасувати</span>
                     </button>
-                    <button onclick="processAndRedirectSimple()" id="btn-submit-simple" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95">
+                    <button onclick="processAndRedirectSimple()" id="btn-submit-simple" class="w-full md:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95">
                         <span class="btn-text">Згенерувати готовий архів</span>
                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ЕКРАН УСПІХУ (Success Screen) -->
+            <div id="success-box" class="hidden mt-6 space-y-6 text-center py-8">
+                <div class="relative w-20 h-20 mx-auto flex items-center justify-center shrink-0 mb-2">
+                    <div class="absolute inset-0 border border-emerald-500/20 rounded-full animate-pulse pointer-events-none"></div>
+                    <i class="fa-solid fa-circle-check text-4xl text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-bounce"></i>
+                </div>
+                
+                <div class="space-y-2">
+                    <h3 class="text-xl font-bold text-white" data-i18n="success-title">Архів успішно створено!</h3>
+                    <p class="text-xs md:text-sm text-slate-400 max-w-md mx-auto leading-relaxed" data-i18n="success-desc">Завантаження вашого готового архіву сервера вже розпочалося. Якщо воно не розпочалося автоматично, ви можете завантажити його повторно.</p>
+                </div>
+
+                <!-- Кнопки дій -->
+                <div class="flex flex-col sm:flex-row justify-center gap-3 pt-4 max-w-md mx-auto">
+                    <button onclick="retryDownload()" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-95 text-xs md:text-sm">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                        <span data-i18n="btn-retry">Повторити завантаження</span>
+                    </button>
+                    <button onclick="resetFiles()" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-900/60 hover:bg-slate-800 text-slate-400 font-semibold px-6 py-3.5 rounded-xl transition-all duration-300 border border-slate-800 active:scale-95 text-xs md:text-sm">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span data-i18n="btn-return-home">Повернутися на головну</span>
                     </button>
                 </div>
             </div>
@@ -405,7 +430,11 @@ enable-command-block=true</textarea>
                 "footer-text": "Зроблено для швидкої підготовки файлів сервера.",
                 "help-feedback-title": "💬 Відгуки та пропозиції",
                 "help-feedback-desc": "Знайшли баг або маєте ідею щодо покращення? Напишіть нам!",
-                "rp-external-tip": "💡 <b>Порада:</b> Якщо ви завантажили ресурспак окремо з сайту карти, пріоритетно завантажуйте на mc-packs.net саме його, а не витягнуту нами версію. Дякуємо за увагу!"
+                "rp-external-tip": "💡 <b>Порада:</b> Якщо ви завантажили ресурспак окремо з сайту карти, пріоритетно завантажуйте на mc-packs.net саме його, а не витягнуту нами версію. Дякуємо за увагу!",
+                "success-title": "Архів успішно створено!",
+                "success-desc": "Завантаження вашого готового архіву сервера вже розпочалося. Якщо воно не розпочалося автоматично, ви можете завантажити його повторно.",
+                "btn-retry": "Повторити завантаження",
+                "btn-return-home": "Повернутися на головну"
             },
             ru: {
                 "badge": "Auto-Packer Utility",
@@ -453,7 +482,11 @@ enable-command-block=true</textarea>
                 "footer-text": "Сделано для быстрой подготовки файлов сервера.",
                 "help-feedback-title": "💬 Отзывы и предложения",
                 "help-feedback-desc": "Нашли баг или есть идея по улучшению? Напишите нам!",
-                "rp-external-tip": "💡 <b>Совет:</b> Если вы скачали ресурспак отдельно с сайта карты, приоритетно загружайте на mc-packs.net именно его, а не извлеченную нами версию. Спасибо за внимание!"
+                "rp-external-tip": "💡 <b>Совет:</b> Если вы скачали ресурспак отдельно с сайта карты, приоритетно загружайте на mc-packs.net именно его, а не извлеченную нами версию. Спасибо за внимание!",
+                "success-title": "Архив успешно создан!",
+                "success-desc": "Загрузка вашего готового архива сервера уже началась. Если она не началась автоматически, вы можете скачать его повторно.",
+                "btn-retry": "Повторить загрузку",
+                "btn-return-home": "Вернуться на главную"
             },
             en: {
                 "badge": "Auto-Packer Utility",
@@ -501,7 +534,11 @@ enable-command-block=true</textarea>
                 "footer-text": "Made for fast server file preparation.",
                 "help-feedback-title": "💬 Feedback & Suggestions",
                 "help-feedback-desc": "Found a bug or have an idea for improvement? Let us know!",
-                "rp-external-tip": "💡 <b>Tip:</b> If you downloaded the resource pack separately from the map site, it is highly recommended to upload that version to mc-packs.net instead of the one extracted by our tool. Thank you for your attention!"
+                "rp-external-tip": "💡 <b>Tip:</b> If you downloaded the resource pack separately from the map site, it is highly recommended to upload that version to mc-packs.net instead of the one extracted by our tool. Thank you for your attention!",
+                "success-title": "Archive Created Successfully!",
+                "success-desc": "Your server archive download has started. If it didn't start automatically, you can trigger the download again.",
+                "btn-retry": "Retry Download",
+                "btn-return-home": "Return to Home"
             }
         };
 
@@ -605,6 +642,7 @@ enable-command-block=true</textarea>
         let detectedResourcePackBlob = null;
         let detectedResourcePackName = "";
         let stepOneCompleted = false;
+        let lastGeneratedZipBlob = null; // Зберігаємо згенерований архів у пам'яті для повторного скачування
 
         const defaultConfig = `allow-flight=true
 max-players=4
@@ -617,6 +655,41 @@ resource-pack-prompt=
 resource-pack-sha1=
 spawn-protection=0
 enable-command-block=true`;
+
+        // Глобальна функція скидання стану (Оголошена у глобальній області видимості)
+        function resetFiles() {
+            uploadedZipBlob = null;
+            uploadedFileName = "";
+            detectedResourcePackBlob = null;
+            detectedResourcePackName = "";
+            stepOneCompleted = false;
+            lastGeneratedZipBlob = null; // Очищення пам'яті
+            
+            // Очищуємо форму Кроку 2
+            const rpUrlInput = document.getElementById('rp-url-input');
+            if (rpUrlInput) rpUrlInput.value = "";
+            
+            const fileStatusBox = document.getElementById('file-status-box');
+            if (fileStatusBox) fileStatusBox.classList.add('hidden');
+            
+            const wizardBox = document.getElementById('wizard-box');
+            if (wizardBox) wizardBox.classList.add('hidden');
+            
+            const simpleBox = document.getElementById('simple-submit-box');
+            if (simpleBox) simpleBox.classList.add('hidden');
+
+            const successBox = document.getElementById('success-box');
+            if (successBox) successBox.classList.add('hidden');
+            
+            const dropzone = document.getElementById('dropzone');
+            if (dropzone) dropzone.classList.remove('hidden');
+            
+            const zipInput = document.getElementById('zip-input');
+            if (zipInput) zipInput.value = '';
+            
+            const loadingBox = document.getElementById('loading-box');
+            if (loadingBox) loadingBox.classList.add('hidden');
+        }
 
         // БЕЗПЕЧНА ІНІЦІАЛІЗАЦІЯ ВСІХ ПОДІЙ ПІСЛЯ ЗАВАНТАЖЕННЯ DOM
         // Це повністю виключає помилки в консолі і гарантує, що кнопки будуть робочими!
@@ -1189,6 +1262,26 @@ enable-command-block=true`;
             generateFinalServerZip(null);
         }
 
+        // Спеціальна допоміжна функція для запуску прямого скачування блобу
+        function triggerDownloadBlob(blob) {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = "server_ready.zip";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        // Функція повторного скачування останнього згенерованого архіву
+        function retryDownload() {
+            if (lastGeneratedZipBlob) {
+                triggerDownloadBlob(lastGeneratedZipBlob);
+            } else {
+                const lang = getActiveLang();
+                alert(lang === "uk" ? "Помилка: немає згенерованого архіву в пам'яті." : (lang === "ru" ? "Ошибка: нет сгенерированного архива в памяти." : "Error: no generated archive in memory."));
+            }
+        }
+
         function generateFinalServerZip(rpData) {
             if (uploadedZipBlob === null) return;
 
@@ -1257,15 +1350,16 @@ enable-command-block=true`;
                 newZip.file("server.properties", propertiesText);
 
                 newZip.generateAsync({ type: "blob" }).then(function(content) {
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = URL.createObjectURL(content);
-                    downloadLink.download = "server_ready.zip";
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
+                    lastGeneratedZipBlob = content; // Зберігаємо згенерований ZIP у пам'ять сторінки
 
-                    // Оновлення: миттєве скидання стану інтерфейсу до початкового після початку скачування
-                    resetFiles();
+                    // Запускаємо скачування
+                    triggerDownloadBlob(content);
+
+                    // Скриваємо завантаження та показуємо красивий екран успіху
+                    if (loadingBox) loadingBox.classList.add('hidden');
+                    
+                    const successBox = document.getElementById('success-box');
+                    if (successBox) successBox.classList.remove('hidden');
 
                     const enableRedirectEl = document.getElementById('enable-redirect');
                     const customHostUrlEl = document.getElementById('custom-host-url');
@@ -1274,7 +1368,9 @@ enable-command-block=true`;
                     const customHostUrl = customHostUrlEl ? customHostUrlEl.value.trim() : "";
 
                     if (enableRedirect && customHostUrl) {
-                        window.open(customHostUrl, "minecraft_host_panel");
+                        setTimeout(() => {
+                            window.open(customHostUrl, "minecraft_host_panel");
+                        }, 1200);
                     }
                 }).catch(function(zipErr) {
                     console.error("Помилка генерації ZIP: ", zipErr);
