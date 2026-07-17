@@ -18,6 +18,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Безпечне підключення бібліотеки JSZip з криптографічним захистом цілісності (SRI) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Бібліотека красивого вильоту конфетті (Confetti) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Шрифти Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -331,7 +333,7 @@ enable-command-block=true</textarea>
                                 <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold font-medium" data-i18n="step-2-desc">Нажмите «Шаг 1», скачайте ресурспак и забросьте его на mc-packs.net.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
-                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
                                 <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый block с mc-packs in поле «Шаг 2» и нажмите финальную кнопку.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
@@ -341,8 +343,41 @@ enable-command-block=true</textarea>
                         </div>
                     </div>
 
-                    <!-- Права колонка: Disqus коментарі (Стилізовані у форму макету) -->
+                    <!-- Права колонка: Disqus коментарі (Стилізовані у форму макету, Вбудовані Кастомні Реакції) -->
                     <div class="space-y-6">
+                        <!-- Блок Кастомних Реакцій з Неоновим Ефектом та Конфетті (Перед Disqus коментарями) -->
+                        <div class="p-6 rounded-[24px] bg-[#070b13]/80 border border-emerald-500/15 space-y-4 shadow-2xl">
+                            <h3 class="font-extrabold text-white text-sm" data-i18n="reactions-title">Що ви думаєте?</h3>
+                            <div class="flex flex-wrap gap-2.5 justify-between" id="reactions-container">
+                                <!-- Реакція: Like -->
+                                <button onclick="triggerReaction('like')" id="react-like" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
+                                    <span class="text-xl group-hover:scale-110 transition-transform">👍</span>
+                                    <span id="react-count-like" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">14</span>
+                                </button>
+                                <!-- Реакція: Funny -->
+                                <button onclick="triggerReaction('funny')" id="react-funny" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
+                                    <span class="text-xl group-hover:scale-110 transition-transform">😆</span>
+                                    <span id="react-count-funny" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">4</span>
+                                </button>
+                                <!-- Реакція: Love -->
+                                <button onclick="triggerReaction('love')" id="react-love" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
+                                    <span class="text-xl group-hover:scale-110 transition-transform">😍</span>
+                                    <span id="react-count-love" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">8</span>
+                                </button>
+                                <!-- Реакція: Wow -->
+                                <button onclick="triggerReaction('wow')" id="react-wow" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
+                                    <span class="text-xl group-hover:scale-110 transition-transform">😮</span>
+                                    <span id="react-count-wow" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">5</span>
+                                </button>
+                                <!-- Реакція: Sad -->
+                                <button onclick="triggerReaction('sad')" id="react-sad" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
+                                    <span class="text-xl group-hover:scale-110 transition-transform">😢</span>
+                                    <span id="react-count-sad" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">1</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Права колонка: Disqus коментарі -->
                         <h2 class="text-xl font-extrabold text-emerald-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]">
                             <i class="fa-solid fa-comments"></i> <span data-i18n="help-feedback-title">Отзывы и предложения</span>
                         </h2>
@@ -434,7 +469,8 @@ enable-command-block=true</textarea>
                 "success-title": "Архів успішно створено!",
                 "success-desc": "Завантаження вашого готового архіву сервера вже розпочалося. Якщо воно не розпочалося автоматично, ви можете завантажити його повторно.",
                 "btn-retry": "Повторити завантаження",
-                "btn-return-home": "Повернутися на головну"
+                "btn-return-home": "Повернутися на головну",
+                "reactions-title": "Що ви думаєте?"
             },
             ru: {
                 "badge": "Auto-Packer Utility",
@@ -486,13 +522,14 @@ enable-command-block=true</textarea>
                 "success-title": "Архив успешно создан!",
                 "success-desc": "Загрузка вашего готового архива сервера уже началась. Если она не началась автоматически, вы можете скачать его повторно.",
                 "btn-retry": "Повторить загрузку",
-                "btn-return-home": "Вернуться на главную"
+                "btn-return-home": "Вернуться на главную",
+                "reactions-title": "Что вы думаете?"
             },
             en: {
                 "badge": "Auto-Packer Utility",
                 "main-title": "Auto-Packer Utility",
                 "main-desc": "The easiest way to upload any custom map to your Minecraft server in 1 minute! Just drag and drop the archive - the site will automatically prepare the world without bugs and help you link the resource pack.",
-                "menu-prop": "server.properties",
+                "menu-prop": "Edit server.properties",
                 "menu-edit": "Edit Archive",
                 "menu-help": "How it works?",
                 "prop-title": "Configure server.properties",
@@ -538,8 +575,18 @@ enable-command-block=true</textarea>
                 "success-title": "Archive Created Successfully!",
                 "success-desc": "Your server archive download has started. If it didn't start automatically, you can trigger the download again.",
                 "btn-retry": "Retry Download",
-                "btn-return-home": "Return to Home"
+                "btn-return-home": "Return to Home",
+                "reactions-title": "What do you think?"
             }
+        };
+
+        // Базові лічильники реакцій на сайті (Статистика для активності)
+        const baseReactionCounts = {
+            like: 14,
+            funny: 4,
+            love: 8,
+            wow: 5,
+            sad: 1
         };
 
         // Безпечні обгортки для роботи з локальним сховищем (захищають від SecurityError у file://)
@@ -634,6 +681,54 @@ enable-command-block=true</textarea>
             });
 
             updateButtonText();
+            initReactions(); // Оновлення реакцій при зміні мови
+        }
+
+        // Ініціалізація та відмальовування кастомних реакцій
+        function initReactions() {
+            const savedReaction = safeGetStorage('user_selected_reaction');
+            
+            for (const key in baseReactionCounts) {
+                const countEl = document.getElementById(`react-count-${key}`);
+                const btnEl = document.getElementById(`react-${key}`);
+                if (!countEl || !btnEl) continue;
+
+                let count = baseReactionCounts[key];
+                if (savedReaction === key) {
+                    count += 1;
+                    // Активний стан з неоновим світінням
+                    btnEl.classList.remove('border-slate-800', 'bg-slate-950/40');
+                    btnEl.classList.add('border-emerald-500/80', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.15)]');
+                } else {
+                    // Звичайний стан
+                    btnEl.classList.remove('border-emerald-500/80', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.15)]');
+                    btnEl.classList.add('border-slate-800', 'bg-slate-950/40');
+                }
+                countEl.innerText = count;
+            }
+        }
+
+        // Натискання на реакцію з вильотом неонового конфетті
+        function triggerReaction(key) {
+            const savedReaction = safeGetStorage('user_selected_reaction');
+
+            if (savedReaction === key) {
+                safeSetStorage('user_selected_reaction', '');
+            } else {
+                safeSetStorage('user_selected_reaction', key);
+                
+                // Запускаємо смарагдовий салют-конфетті
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 75,
+                        origin: { y: 0.85 },
+                        colors: ['#10b981', '#059669', '#34d399', '#ffffff', '#4f46e5']
+                    });
+                }
+            }
+
+            initReactions();
         }
 
         let uploadedZipBlob = null;
@@ -771,6 +866,7 @@ enable-command-block=true`;
             }
 
             updateButtonText();
+            initReactions(); // Ініціалізація реакцій при завантаженні
         });
 
         function toggleRedirectInput() {
