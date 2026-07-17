@@ -422,6 +422,18 @@ enable-command-block=true</textarea>
 
     <!-- Логіка та безпечна ініціалізація (БЕЗ ЖОДНИХ КРИТИЧНИХ ПОМИЛОК) -->
     <script>
+        // Твоя конфігурація Firebase (Додана глобально на самий початок скрипту!)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ",
+            authDomain: "auto-packer-utility.firebaseapp.com",
+            databaseURL: "https://auto-packer-utility-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "auto-packer-utility",
+            storageBucket: "auto-packer-utility.firebasestorage.app",
+            messagingSenderId: "77228382987",
+            appId: "1:77228382987:web:bf4ef84b555ee1a654e00e",
+            measurementId: "G-1E2QP3H59Z"
+        };
+
         // Словник перекладів (Без innerHTML конфліктів)
         const translations = {
             uk: {
@@ -559,7 +571,7 @@ enable-command-block=true</textarea>
                 "step2-tag": "Step 2",
                 "step2-title": "Paste Copied Text Block",
                 "step2-desc": "Copy the text block from mc-packs.net and paste it here completely.",
-                "step2-placeholder": "Paste the entire block from mc-packs.net here...\n\nExample:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...",
+                "step2-placeholder": "Paste the entire block from mc-packs.net here...\n\nExample:\nresource-pack=https://download.mc-packs.net/...\nresource-pack-sha1=1432ad...\nresource-pack-id=f71e52...",
                 "btn-finish-wizard": "Download Archive",
                 "btn-finish-simple": "Download Archive",
                 "btn-cancel": "Cancel",
@@ -692,7 +704,7 @@ enable-command-block=true</textarea>
         // Ініціалізація та відмальовування кастомних реакцій
         function initReactions() {
             const savedReaction = safeGetStorage('user_selected_reaction');
-            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ");
+            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey !== "" && firebaseConfig.apiKey !== "YOUR_API_KEY");
             
             for (const key in baseReactionCounts) {
                 const countEl = document.getElementById(`react-count-${key}`);
@@ -716,7 +728,7 @@ enable-command-block=true</textarea>
 
         // Функція оновлення лічильника в хмарі Firebase Realtime Database
         function updateFirebaseReaction(key, incrementValue) {
-            if (typeof firebase === 'undefined' || firebaseConfig.apiKey === "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ") return;
+            if (typeof firebase === 'undefined' || !firebaseConfig.apiKey || firebaseConfig.apiKey === "" || firebaseConfig.apiKey === "YOUR_API_KEY") return;
             try {
                 const db = firebase.database();
                 db.ref('reactions/' + key).transaction((currentValue) => {
@@ -730,7 +742,7 @@ enable-command-block=true</textarea>
         // Натискання на реакцію з вильотом неонового конфетті
         function triggerReaction(key) {
             const savedReaction = safeGetStorage('user_selected_reaction');
-            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ");
+            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey !== "" && firebaseConfig.apiKey !== "YOUR_API_KEY");
 
             if (savedReaction === key) {
                 // Користувач прибирає свій лайк
@@ -834,7 +846,8 @@ enable-command-block=true`;
             initLanguage();
 
             // Автоматичне підключення та синхронізація з базою Firebase у реальному часі
-            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ") {
+            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey !== "" && firebaseConfig.apiKey !== "YOUR_API_KEY");
+            if (isFirebaseActive) {
                 try {
                     firebase.initializeApp(firebaseConfig);
                     const db = firebase.database();
