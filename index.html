@@ -20,6 +20,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Бібліотека красивого вильоту конфетті (Confetti) -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- ПІДКЛЮЧЕННЯ БЕЗКОШТОВНОЇ БАЗИ ДАНИХ GOOGLE FIREBASE -->
+    <!-- Вставте сюди ваші налаштування з Firebase Console:  -->
+    const firebaseConfig = {
+     apiKey: "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ",
+     authDomain: "auto-packer-utility.firebaseapp.com",
+     databaseURL: "https://auto-packer-utility-default-rtdb.europe-west1.firebasedatabase.app/",
+     projectId: "auto-packer-utility",
+     storageBucket: "auto-packer-utility.firebasestorage.app",
+     messagingSenderId: "77228382987",
+     appId: "1:77228382987:web:bf4ef84b555ee1a654e00e",
+     measurementId: "G-1E2QP3H59Z"
+   };
+    
     <!-- Шрифти Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -333,7 +347,7 @@ enable-command-block=true</textarea>
                                 <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold font-medium" data-i18n="step-2-desc">Нажмите «Шаг 1», скачайте ресурспак и забросьте его на mc-packs.net.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
-                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
+                                <div class="w-10 h-10 rounded-xl bg-slate-950 border border-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.15)]">3</div>
                                 <p class="text-xs md:text-sm text-slate-400 leading-relaxed font-semibold" data-i18n="step-3-desc">Вставьте копируемый block с mc-packs in поле «Шаг 2» и нажмите финальную кнопку.</p>
                             </div>
                             <div class="flex gap-4 items-center bg-slate-950/30 border border-slate-800/80 p-4 rounded-xl hover:border-emerald-500/20 transition-all duration-300">
@@ -352,27 +366,27 @@ enable-command-block=true</textarea>
                                 <!-- Реакція: Like -->
                                 <button onclick="triggerReaction('like')" id="react-like" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
                                     <span class="text-xl group-hover:scale-110 transition-transform">👍</span>
-                                    <span id="react-count-like" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">14</span>
+                                    <span id="react-count-like" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">0</span>
                                 </button>
                                 <!-- Реакція: Funny -->
                                 <button onclick="triggerReaction('funny')" id="react-funny" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
                                     <span class="text-xl group-hover:scale-110 transition-transform">😆</span>
-                                    <span id="react-count-funny" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">4</span>
+                                    <span id="react-count-funny" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">0</span>
                                 </button>
                                 <!-- Реакція: Love -->
                                 <button onclick="triggerReaction('love')" id="react-love" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
                                     <span class="text-xl group-hover:scale-110 transition-transform">😍</span>
-                                    <span id="react-count-love" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">8</span>
+                                    <span id="react-count-love" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">0</span>
                                 </button>
                                 <!-- Реакція: Wow -->
                                 <button onclick="triggerReaction('wow')" id="react-wow" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
                                     <span class="text-xl group-hover:scale-110 transition-transform">😮</span>
-                                    <span id="react-count-wow" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">5</span>
+                                    <span id="react-count-wow" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">0</span>
                                 </button>
                                 <!-- Реакція: Sad -->
                                 <button onclick="triggerReaction('sad')" id="react-sad" class="react-btn flex flex-col items-center gap-1.5 py-3 px-4 bg-slate-950/40 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/30 rounded-xl transition-all duration-300 min-w-[70px] active:scale-95 group">
                                     <span class="text-xl group-hover:scale-110 transition-transform">😢</span>
-                                    <span id="react-count-sad" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">1</span>
+                                    <span id="react-count-sad" class="text-xs font-bold text-slate-400 group-hover:text-emerald-400">0</span>
                                 </button>
                             </div>
                         </div>
@@ -580,13 +594,13 @@ enable-command-block=true</textarea>
             }
         };
 
-        // Базові лічильники реакцій на сайті (Статистика для активності)
+        // Базові лічильники реакцій на сайті (Статистика для активності, встановлені на 0)
         const baseReactionCounts = {
-            like: 14,
-            funny: 4,
-            love: 8,
-            wow: 5,
-            sad: 1
+            like: 0,
+            funny: 0,
+            love: 0,
+            wow: 0,
+            sad: 0
         };
 
         // Безпечні обгортки для роботи з локальним сховищем (захищають від SecurityError у file://)
@@ -737,7 +751,7 @@ enable-command-block=true</textarea>
         let detectedResourcePackBlob = null;
         let detectedResourcePackName = "";
         let stepOneCompleted = false;
-        let lastGeneratedZipBlob = null; // Зберігаємо згенерований архів у пам'яті для повторного скачування
+        let lastGeneratedZipBlob = null; // Зберігаємо згенерований ZIP у пам'ять сторінки
 
         const defaultConfig = `allow-flight=true
 max-players=4
