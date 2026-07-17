@@ -21,8 +21,10 @@
     <!-- Бібліотека красивого вильоту конфетті (Confetti) -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
-   
-    
+    <!-- ПІДКЛЮЧЕННЯ БЕЗКОШТОВНОЇ БАЗИ ДАНИХ GOOGLE FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <!-- Шрифти Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -690,6 +692,7 @@ enable-command-block=true</textarea>
         // Ініціалізація та відмальовування кастомних реакцій
         function initReactions() {
             const savedReaction = safeGetStorage('user_selected_reaction');
+            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ");
             
             for (const key in baseReactionCounts) {
                 const countEl = document.getElementById(`react-count-${key}`);
@@ -711,15 +714,53 @@ enable-command-block=true</textarea>
             }
         }
 
+        // Функція оновлення лічильника в хмарі Firebase Realtime Database
+        function updateFirebaseReaction(key, incrementValue) {
+            if (typeof firebase === 'undefined' || firebaseConfig.apiKey === "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ") return;
+            try {
+                const db = firebase.database();
+                db.ref('reactions/' + key).transaction((currentValue) => {
+                    return (currentValue || 0) + incrementValue;
+                });
+            } catch (err) {
+                console.error("Помилка транзакції Firebase: ", err);
+            }
+        }
+
         // Натискання на реакцію з вильотом неонового конфетті
         function triggerReaction(key) {
             const savedReaction = safeGetStorage('user_selected_reaction');
+            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ");
 
             if (savedReaction === key) {
+                // Користувач прибирає свій лайк
                 safeSetStorage('user_selected_reaction', '');
+                if (isFirebaseActive) {
+                    updateFirebaseReaction(key, -1);
+                } else {
+                    baseReactionCounts[key] = Math.max(0, baseReactionCounts[key] - 1);
+                    initReactions();
+                }
             } else {
+                // Користувач перемикає або ставить новий лайк
+                if (savedReaction) {
+                    // Прибираємо попередній голос
+                    if (isFirebaseActive) {
+                        updateFirebaseReaction(savedReaction, -1);
+                    } else {
+                        baseReactionCounts[savedReaction] = Math.max(0, baseReactionCounts[savedReaction] - 1);
+                    }
+                }
+
+                // Ставимо новий голос
                 safeSetStorage('user_selected_reaction', key);
-                
+                if (isFirebaseActive) {
+                    updateFirebaseReaction(key, 1);
+                } else {
+                    baseReactionCounts[key] += 1;
+                    initReactions();
+                }
+
                 // Запускаємо смарагдовий салют-конфетті
                 if (typeof confetti === 'function') {
                     confetti({
@@ -730,8 +771,6 @@ enable-command-block=true</textarea>
                     });
                 }
             }
-
-            initReactions();
         }
 
         let uploadedZipBlob = null;
@@ -793,6 +832,27 @@ enable-command-block=true`;
         // Це повністю виключає помилки в консолі і гарантує, що кнопки будуть робочими!
         window.addEventListener('DOMContentLoaded', () => {
             initLanguage();
+
+            // Автоматичне підключення та синхронізація з базою Firebase у реальному часі
+            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "AIzaSyC31Lyi-6l_5XZFpaHckOYYVbCzYi6-AiQ") {
+                try {
+                    firebase.initializeApp(firebaseConfig);
+                    const db = firebase.database();
+                    
+                    // Слухаємо зміни лічильників з хмари у реальному часі
+                    db.ref('reactions').on('value', (snapshot) => {
+                        const data = snapshot.val();
+                        if (data) {
+                            for (const key in data) {
+                                baseReactionCounts[key] = data[key] || 0;
+                            }
+                            initReactions(); // Оновлюємо інтерфейс під нові цифри
+                        }
+                    });
+                } catch (fbErr) {
+                    console.error("Помилка підключення Firebase: ", fbErr);
+                }
+            }
 
             const enableRedirect = safeGetStorage('minecraft_packer_enable_redirect') === 'true';
             const savedUrl = safeGetStorage('minecraft_packer_host_url') || "";
