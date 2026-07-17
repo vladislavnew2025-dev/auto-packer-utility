@@ -703,29 +703,29 @@ enable-command-block=true</textarea>
 
         // Ініціалізація та відмальовування кастомних реакцій
         function initReactions() {
-            const savedReaction = safeGetStorage('user_selected_reaction');
-            const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey !== "" && firebaseConfig.apiKey !== "YOUR_API_KEY");
-            
-            for (const key in baseReactionCounts) {
-                const countEl = document.getElementById(`react-count-${key}`);
-                const btnEl = document.getElementById(`react-${key}`);
-                if (!countEl || !btnEl) continue;
+    const savedReaction = safeGetStorage('user_selected_reaction');
+    const isFirebaseActive = (typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey !== "" && firebaseConfig.apiKey !== "YOUR_API_KEY");
 
-                let count = baseReactionCounts[key];
-                if (savedReaction === key) {
-                    count += 1;
-                    // Активний стан з неоновим світінням
-                    btnEl.classList.remove('border-slate-800', 'bg-slate-950/40');
-                    btnEl.classList.add('border-emerald-500/80', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.15)]');
-                } else {
-                    // Звичайний стан
-                    btnEl.classList.remove('border-emerald-500/80', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.15)]');
-                    btnEl.classList.add('border-slate-800', 'bg-slate-950/40');
-                }
-                countEl.innerText = count;
-            }
+    for (const key in baseReactionCounts) {
+        const countEl = document.getElementById(`react-count-${key}`);
+        const btnEl = document.getElementById(`react-${key}`);
+        if (!countEl || !btnEl) continue;
+
+        const count = baseReactionCounts[key]; // без += 1, baseReactionCounts вже містить твій голос
+
+        if (savedReaction === key) {
+            // Активний стан з неоновим світінням
+            btnEl.classList.remove('border-slate-800', 'bg-slate-950/40');
+            btnEl.classList.add('border-emerald-500/80', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.15)]');
+        } else {
+            // Звичайний стан
+            btnEl.classList.remove('border-emerald-500/80', 'bg-emerald-500/10', 'text-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.15)]');
+            btnEl.classList.add('border-slate-800', 'bg-slate-950/40');
         }
-
+        countEl.innerText = count;
+    }
+}
+        
         // Функція оновлення лічильника в хмарі Firebase Realtime Database
         function updateFirebaseReaction(key, incrementValue) {
             if (typeof firebase === 'undefined' || !firebaseConfig.apiKey || firebaseConfig.apiKey === "" || firebaseConfig.apiKey === "YOUR_API_KEY") return;
