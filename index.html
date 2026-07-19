@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="site-title">Auto-Packer Utility — швидке завантаження карт на сервер Minecraft</title>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Auto-Packer Utility",
+  "description": "Найпростіший спосіб завантажити карту на Minecraft сервер за 1 хвилину без багів!",
+  "url": "https://vladislavnew2025-dev.github.io/auto-packer-utility/",
+  "applicationCategory": "UtilitiesApplication"
+}
+</script>
     
     <!-- Пошукова оптимізація (SEO) для Google -->
     <meta name="description" content="Найпростіший спосіб завантажити карту на Minecraft сервер за 1 хвилину без багів! Автоматичне перейменування у world, конфігурація server.properties та авто-ресурспак.">
@@ -13,6 +23,7 @@
     <!-- Твоя правильна іконка сайту (Favicon) з кеш-бустингом ?v=2 -->
     <link rel="icon" type="image/png" href="./favicon.png?v=2">
     <link rel="shortcut icon" type="image/png" href="./favicon.png?v=2">
+    <link rel="icon" type="image/png" href="/favicon.png">
 
     <!-- Підключення Tailwind CSS для стилів -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -614,16 +625,15 @@ enable-command-block=true</textarea>
             try { localStorage.setItem(key, value); } catch (e) {}
         }
 
-        // Отримання поточної мови користувача
         function getActiveLang() {
-            const savedLang = safeGetStorage('preferred_language');
-            if (savedLang) return savedLang;
+    const savedLang = safeGetStorage('preferred_language');
+    if (savedLang) return savedLang;
 
-            const userLang = (navigator.language || navigator.userLanguage || "en").toLowerCase();
-            if (userLang.startsWith("uk")) return "uk";
-            if (userLang.startsWith("ru") || userLang.startsWith("be") || userLang.startsWith("kk")) return "ru";
-            return "en"; // За замовчуванням англійська для всього іншого світу!
-        }
+    const userLang = (navigator.language || navigator.userLanguage || "uk").toLowerCase();
+    if (userLang.startsWith("ru") || userLang.startsWith("be") || userLang.startsWith("kk")) return "ru";
+    if (userLang.startsWith("en")) return "en";
+    return "uk"; // Дефолт — українська, бо це основна мова сайту (html lang="uk")
+}
 
         // Динамічне оновлення тексту кнопки відповідно до мови та налаштувань перенаправлення
         function updateButtonText() {
